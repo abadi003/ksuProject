@@ -28,9 +28,11 @@
 	</button>
 	<input name="search" placeholder="search" type="search">
 	<div class="popup">
-	<input class="login-window" name="email" placeholder="email" type="email">
+		<form action="/signin" method="post">
+	<input class="login-window" name="username" placeholder="email" type="email">
 	<input class="login-window" name="password" placeholder="password" type="password">
-	<button class="button-login">login</button>
+	<button class="button-login" type="submit">login</button>
+		</form>
 		<button id="forgot">
 			forgot password
 		</button>

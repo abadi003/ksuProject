@@ -38,8 +38,8 @@ login.addEventListener("click" , function () {
 
 });
 function isPopupChildren(target) {
-    for (let i = 0 ; i < popup[0].childNodes.length ; ++i){
-        if (target.target === popup[0].childNodes[i] || target.target === popup[0]){
+    for (let i = 0 ; i < popup[0].childNodes[1].childNodes.length ; ++i){
+        if (target.target === popup[0].childNodes[1].childNodes[i]|| target.target === popup[0] ){
             return true;
         }
     }
@@ -56,3 +56,4 @@ function isMenuChildren(target) {
 myMenuButton.addEventListener("click" , function () {
 document.getElementsByClassName("menu")[0].classList.toggle("show-menu");
 })
+
