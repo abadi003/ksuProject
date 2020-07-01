@@ -19,7 +19,7 @@ var PORT = process.env.PORT || 3;
 
 
 // Requiring our models for syncing
-var db = require("C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\models");
+var db = require("./models");
 
 
 // Sets up the Express app to handle data parsing
@@ -51,14 +51,13 @@ app.use(express.json());
 // Syncing our sequelize models and then starting our Express app
 // =============================================================
 db.sequelize.sync({ force: false }).then(function() {
-    var User = require('C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\models\\user.js') (db.sequelize , db.Sequelize);
-    console.log(User);
-    require("C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\config\\passport\\passport.js")(passport, User);
+    var User = require('./models/user') (db.sequelize , db.Sequelize);
+    require("./config/passport/passport")(passport, User);
 
 // Routes
 // =============================================================
 
-    require("C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\authcontroller\\auth.js")(app,passport);
+    require("./authcontroller/auth")(app,passport);
     app.listen(PORT, function() {
         console.log("App listening on PORT " + PORT);
     });

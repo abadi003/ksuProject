@@ -1,8 +1,7 @@
 var bCrypt = require('bcrypt-nodejs');
 var passport = require("passport");
 var mysql = require('mysql')
-var sql = require("dataBase.js")
-
+var sql = require("../../dataBase")
 
 // function to be called while there is a new sign/signup
 // We are using passport local signin/signup strategies for our app
