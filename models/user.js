@@ -1,10 +1,12 @@
 module.exports = function(sequelize, Sequelize) {
+var passportLocalSequelize = require('passport-local-sequelize');
 
     var User = sequelize.define('user', {
 
-        user_id: {
+        userId: {
             primaryKey: true,
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            underscored: true
         },
         email: {
             type: Sequelize.STRING,
@@ -18,8 +20,10 @@ module.exports = function(sequelize, Sequelize) {
             notEmpty: true
         },
 
-        DOB: {
-            type: Sequelize.date
+        dateOfBirth: {
+            type: Sequelize.DATE,
+            underscored: false
+
         },
 
         level: {
@@ -29,9 +33,16 @@ module.exports = function(sequelize, Sequelize) {
         balance: {
             type: Sequelize.INTEGER
         },
+        password:{
+            type: Sequelize.STRING
+        }
 
+    },{ underscored: true,
+        timestamps: false} );
+
+    passportLocalSequelize.attachToUser(User, {
+        usernameField: 'email'
     });
-
     return User;
 
 }

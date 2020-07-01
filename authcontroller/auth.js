@@ -1,40 +1,41 @@
-var authController = require('C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\authcontroller\\authcontroller.js');
 
-module.exports = function(app, passport) {
-passport = require('passport');
-
-    app.get('/signin', authController.signin);
-
-
-
-    app.get('/dashboard', isLoggedIn, authController.dashboard);
+var passport = require("C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\config\\passport\\passport.js");
+var path = require("path");
+var db = require("C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\models");
+module.exports = function (app, passport) {
+    //
 
 
 
-    app.get('/logout', authController.logout);
+    app.get("/",function(req,res){
 
+        res.render("homePage.ejs" , {user : req.user})
+    })
 
-    app.post('/signin', function(req, res, next) {
-        passport.authenticate('local-signin', function(err, user, info) {
-            if (err) { return next(err); }
-            if (!user) {
-                return res.json({status: 'error', message: info.message});
-            }
-            req.logIn(user, function(err) {
-                if (err) { return next(err); }
-                return res.json({status: 'ok'});
-            });
-        })(req, res, next);
+    app.get("/logout", function (req, res) {
+        console.log("Log Out Route Hit");
+        req.session.destroy(function (err) {
+            if (err) console.log(err)
+            res.redirect('/');
+        });
     });
 
+
+    app.post('/',
+        // wrap passport.authenticate call in a middleware function
+            // call passport authentication passing the "local" strategy name and a callback function
+            passport.authenticate('local-signin', { successRedirect: '/',
+                failureRedirect: '/login' }));
+
+
+        // function to call once successfully authenticated
+
+
+
     function isLoggedIn(req, res, next) {
-
         if (req.isAuthenticated())
-
             return next();
-
         res.redirect('/signin');
 
     }
-
 }

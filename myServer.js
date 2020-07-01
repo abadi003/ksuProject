@@ -1,63 +1,66 @@
-const express = require('express');
-const passport = require('passport');
-var session = require('express-session')
-var bodyParser = require('body-parser')
-const localSQL = require('passport-local-mysql');
-const sequelize = require('sequelize');
-const env = require('dotenv');
-const port = 3;
-const app = express();
-var exphbs = require('express-handlebars')
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-var models = require("C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\models");
+// *****************************************************************************
+// Server.js - This file is the initial starting point for the Node/Express server.
+//
+// ******************************************************************************
+// *** Dependencies
+// =============================================================
+var express = require("express");
+// Import Handlebars
+var exphbs = require("express-handlebars");
 
-//Sync Database
-models.sequelize.sync().then(function() {
+// Sets up the Express App
+// =============================================================
+var app = express();
+var passport   = require('passport');
+var session    = require('express-session');
+var bodyParser = require('body-parser');
+var env = require('dotenv');
+var PORT = process.env.PORT || 3;
 
-    console.log('Nice! Database looks fine')
 
-}).catch(function(err) {
+// Requiring our models for syncing
+var db = require("C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\models");
 
-    console.log(err, "Something went wrong with the Database Update!")
 
-});
-app.use(session({
-    secret: 'abadi',
-    resave: false,
-    saveUninitialized: false
-})); // session secret
+// Sets up the Express app to handle data parsing
+
+
+// For passport
+app.use(session({ secret: 'keyboard cat',resave: false, saveUninitialized:false})); // session secret
+
 app.use(passport.initialize());
-app.use(passport.session());
 
-app.get('/', function(req, res) {
+app.use(passport.session()); // persistent login sessions
 
-    res.render("homepage.ejs");
 
-});
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-//Models
-
-//Routes
-
-var authRoute = require('C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\authcontroller\\auth.js')(app);
-
+// require("C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\config\\passport\\passport.js")(passport, db.User);
+//
+// // Routes
+// // =============================================================
+//
+// require("C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\authcontroller\\auth.js")(app,passport);
 
 //load passport strategies
 
-require('C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\config\\passport\\passport.js')(passport, models.user);
 
-// expose this function to our app using module.exports
-app.use(express.static("Public"))
-app.listen(port, function () {
-    console.log("Server is running on "+ port +" port");
+// Set Express to use Handlebars engine to generate HTML layouts
+
+// Syncing our sequelize models and then starting our Express app
+// =============================================================
+db.sequelize.sync({ force: false }).then(function() {
+    var User = require('C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\models\\user.js') (db.sequelize , db.Sequelize);
+    console.log(User);
+    require("C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\config\\passport\\passport.js")(passport, User);
+
+// Routes
+// =============================================================
+
+    require("C:\\Users\\KRB\\OneDrive\\Pictures\\ksu project\\authcontroller\\auth.js")(app,passport);
+    app.listen(PORT, function() {
+        console.log("App listening on PORT " + PORT);
+    });
+    app.use(express.static("Public"));
 });
-// app.post("/",  passport.authenticate('local-signin' , {
-//     successRedirect: 'https://euw.op.gg/summoner/userName=abadi3',
-//     failureRedirect: '/'
-// }), function (req , res) {
-//
-// })
-// app.get("/", function (req , res) {
-// res.render("homePage.ejs")
-// })

@@ -1,37 +1,24 @@
-module.exports = function(passport, user) {
+var bCrypt = require('bcrypt-nodejs');
+var passport = require("passport");
+var mysql = require('mysql')
+var sql = require("dataBase.js")
 
-    var User = user;
-    console.log(user);
+
+// function to be called while there is a new sign/signup
+// We are using passport local signin/signup strategies for our app
+module.exports = function (passport, auth) {
+    var Auth = auth;
+
     var LocalStrategy = require('passport-local').Strategy;
-    passport.serializeUser(function(user, done) {
-        done(null, user.user_id);
 
-    });
-    passport.deserializeUser(function(id, done) {
-
-        User.findById(id).then(function(user) {
-            console.log(User);
-
-            if (user) {
-
-                done(null, user.get());
-
-            } else {
-
-                done(user.errors, null);
-
-            }
-
-        });
-
-    });
+    //LOCAL SIGNIN
     passport.use('local-signin', new LocalStrategy(
 
         {
 
             // by default, local strategy uses username and password, we will override with email
 
-            usernameField: 'email',
+            usernameField: 'username',
 
             passwordField: 'password',
 
@@ -40,16 +27,16 @@ module.exports = function(passport, user) {
         },
 
 
-        function(req, email, password, done) {
+        function (req, userId, password, done) {
+            var Auth = auth;
 
-            var User = user;
-            console.log(user);
+            var sha = "sha1(\"" + password + "\")"
 
-            User.findOne({
+            Auth.findOne({
                 where: {
-                    email: email
+                    userId: userId
                 }
-            }).then(function(user) {
+            }).then(function (user) {
 
                 if (!user) {
 
@@ -59,12 +46,22 @@ module.exports = function(passport, user) {
 
                 }
 
+                sql.sql(password , function (result) {
+                    console.log(result == user.password)
+                    if (result == user.password){
+                        done(null , user);
+                    }else {
+                        done(null , false);
+                    }
+                })
 
-                var userinfo = user.get();
-                return done(null, true);
 
 
-            }).catch(function(err) {
+
+
+
+
+            }).catch(function (err) {
 
                 console.log("Error:", err);
 
@@ -78,4 +75,15 @@ module.exports = function(passport, user) {
         }
 
     ));
+
+    //serialize
+    passport.serializeUser(function(user, done) {
+        done(null, user);
+    });
+
+    passport.deserializeUser(function(id, done) {
+        done(null , id);
+    });
+
+
 }
