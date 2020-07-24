@@ -1,59 +1,60 @@
-window.addEventListener("scroll", function () {
-document.getElementsByTagName("div")[0].style.height = 100
-});
-var isHidden = true;
-var popup = document.getElementsByClassName("popup");
-var login = document.getElementById("login");
-var myMenuButton = document.getElementById("my-menu");
-var menu = document.getElementsByClassName("menu")
-document.addEventListener("mousedown" , function (target) {
-    if (!isPopupChildren(target) && !isHidden ){
-        popup[0].classList.toggle("fade-out");
-        popup[0].addEventListener("animationend" , function (target) {
-            if(popup[0].classList.contains("show") && popup[0].classList.contains("fade-out")){
-                popup[0].classList.toggle("fade-out");
-                popup[0].classList.toggle("show");
-            }
-        })
+// var myMenuButton = document.getElementById("my-menu-button");
+// var menu = document.getElementById("menu")
+// document.addEventListener("mousedown" , function (target) {
+//     if (!isMenuChildren(target) && !menu.classList.contains("show-menu")){
+//         menu.classList.remove("slide-out");
+//         menu.classList.add("slide-back");
+//         menu.addEventListener("animationend" , function () {
+//             if (!menu.classList.contains("slide-out")){
+//             console.log("hi")
+//             menu.classList.add("show-menu");
+//             menu.classList.remove("slide-back");  
+//             myMenuButton.classList.remove("show-menu");
+//             }
+                
+//         })
 
-        isHidden = true;
-    }
-    if (!isMenuChildren(target) && menu[0].classList.contains("show-menu")){
-        menu[0].classList.toggle("slide-out");
-        menu[0].addEventListener("animationend" , function () {
-            if (menu[0].classList.contains("show-menu") && menu[0].classList.contains("slide-out")){
-                menu[0].classList.toggle("slide-out");
-                menu[0].classList.toggle("show-menu");
-            }
-        })
-    }
+//     }
 
-})
+// })
 
-login.addEventListener("click" , function () {
-    if (!popup[0].classList.contains("show")){
-        popup[0].classList.toggle("show");
-        isHidden =false;
-    }
+// function isMenuChildren(target) {
+//     for (let i = 0 ; i < menu.childNodes.length ; ++i){
+//         if (target.target === menu.childNodes[i] || target.target === menu){
+//             return true;
+//         }
+//     }
+//     return false;
+// }
+// myMenuButton.addEventListener("click" , function () {
+// menu.classList.add("slide-out");
+// menu.classList.remove("show-menu");
+// myMenuButton.classList.add("show-menu");
+// })
 
-});
-function isPopupChildren(target) {
-    for (let i = 0 ; i < popup[0].childNodes[1].childNodes.length ; ++i){
-        if (target.target === popup[0].childNodes[1].childNodes[i]|| target.target === popup[0] ){
-            return true;
-        }
-    }
-return false;
-}
-function isMenuChildren(target) {
-    for (let i = 0 ; i < menu[0].childNodes.length ; ++i){
-        if (target.target === menu[0].childNodes[i] || target.target === menu[0]){
-            return true;
-        }
-    }
-    return false;
-}
-myMenuButton.addEventListener("click" , function () {
-document.getElementsByClassName("menu")[0].classList.toggle("show-menu");
-})
+$(".add").click(function(){
+    $.post("/add_to_cart",{
+        url:$(this).val()
+    } , function(result){
+        $("body").html(result)
+    })
+  });
+  $(".search").keyup(function(){
+     let searched =  $(this).val()
+    $.post("/search",{
+        searched: searched
+    },function(result){
+        searched = $(".search").val();
+        $("body").html(result);
+        $(".search").val(searched);
+        $(".search").focus();
+    })
+  })
+  $(".category").click(function(){
+    $.post("/get_from_category",{
+        category:$(".categoryName").text()
+    } , function(result){
+        $("body").html(result)
+    })
+  });
 

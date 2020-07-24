@@ -17,7 +17,7 @@ module.exports = function (passport, auth) {
 
             // by default, local strategy uses username and password, we will override with email
 
-            usernameField: 'username',
+            usernameField: 'id',
 
             passwordField: 'password',
 

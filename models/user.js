@@ -35,6 +35,9 @@ var passportLocalSequelize = require('passport-local-sequelize');
         },
         password:{
             type: Sequelize.STRING
+        },
+        isAdmin:{
+            type: Sequelize.INTEGER
         }
 
     },{ underscored: true,

@@ -4,22 +4,22 @@
 // ******************************************************************************
 // *** Dependencies
 // =============================================================
-var express = require("express");
+let express = require("express");
 // Import Handlebars
-var exphbs = require("express-handlebars");
+let exphbs = require("express-handlebars");
 
 // Sets up the Express App
 // =============================================================
-var app = express();
-var passport   = require('passport');
-var session    = require('express-session');
-var bodyParser = require('body-parser');
-var env = require('dotenv');
-var PORT = process.env.PORT || 3;
+let app = express();
+let passport   = require('passport');
+let session    = require('express-session');
+let bodyParser = require('body-parser');
+let env = require('dotenv');
+let PORT = process.env.PORT || 3;
 
 
 // Requiring our models for syncing
-var db = require("./models");
+let db = require("./models");
 
 
 // Sets up the Express app to handle data parsing
@@ -51,7 +51,10 @@ app.use(express.json());
 // Syncing our sequelize models and then starting our Express app
 // =============================================================
 db.sequelize.sync({ force: false }).then(function() {
-    var User = require('./models/user') (db.sequelize , db.Sequelize);
+    let User = require('./models/user') (db.sequelize , db.Sequelize);
+    let category = require ('./models/category')(db.sequelize , db.Sequelize);
+    let wholeItem = require('./models/whole_item')(db.sequelize , db.Sequelize);
+    let cart = require('./models/cart')(db.sequelize , db.Sequelize);
     require("./config/passport/passport")(passport, User);
 
 // Routes
