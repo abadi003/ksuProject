@@ -83,7 +83,7 @@ db.sequelize.sync({ force: false }).then(function() {
 // =============================================================
 
     require("./authcontroller/auth")(app,passport);
-    app.listen(PORT, function() {
+    app.listen(PORT, process.env.IP, function() {
         console.log("App listening on PORT " + PORT);
     });
     app.use(express.static("Public"));
