@@ -5,8 +5,16 @@ var path = require("path");
 var Sequelize = require("sequelize");
 var env = process.env.NODE_ENV || "development";
 var config = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
-const dbSocketPath = process.env.DB_SOCKET_PATH || "/cloudsql"
-var sequelize = new Sequelize(config.database, config.username , config.password , config);
+const dbSocketAddr = process.env.DB_HOST.split(":")
+var sequelize = new Sequelize(await mysql.createPool({
+    user: process.env.DB_USER, // e.g. 'my-db-user'
+    password: process.env.DB_PASS, // e.g. 'my-db-password'
+    database: process.env.DB_NAME, // e.g. 'my-database'
+    host: dbSocketAddr[0], // e.g. '127.0.0.1'
+    port: dbSocketAddr[1], // e.g. '3306'
+    // ... Specify additional properties here.
+    ...config
+  }));
 var db = {};
 
 
