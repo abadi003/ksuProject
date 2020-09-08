@@ -14,7 +14,7 @@ var sequelize = new Sequelize({
     host: dbSocketAddr[0], // e.g. '127.0.0.1'
     port: dbSocketAddr[1], // e.g. '3306'
     // ... Specify additional properties here.
-    dialect: 'mysql',
+    dialect: 'mysql]',
   });
 var db = {};
 
