@@ -1,0 +1,44 @@
+<!-- Sidebar -->
+<ul
+  class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled"
+  id="accordionSidebar"
+>
+  <!-- Divider -->
+  <hr class="sidebar-divider mt-5" />
+
+  <!-- Nav Item - Dashboard -->
+  <li class="nav-item" *ngFor="let root of root">
+    <a
+      class="nav-link"
+      href="#"
+      data-toggle="collapse"
+      [attr.data-target]="replaceString('#'+root.name , ' ' , '')"
+      aria-expanded="true"
+      aria-controls="collapsePages"
+    >
+      <i class="fas fa-fw fa-folder"></i>
+      <span>{{ root.name }}</span>
+    </a>
+    <div
+      id='{{ root.name.split(" ").join("") }}'
+      class="collapse"
+      aria-labelledby="headingPages"
+      data-parent="#accordionSidebar"
+    >
+      <div class="bg-white py-2 collapse-inner rounded">
+        <div *ngFor="let category of category">
+          <a
+            class="collapse-item"
+            href="login.html"
+            *ngIf="category.collegeName == root.name"
+          >
+            {{ category.name }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block" />
+</ul>
+<!-- End of Sidebar -->

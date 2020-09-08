@@ -1,155 +1,251 @@
 let passport = require("../config/passport/passport.js");
 let path = require("path");
 let db = require("../models");
-const user = require("../models/user")(db.sequelize, db.Sequelize);;
+const user = require("../models/user")(db.sequelize, db.Sequelize);
 let category = require("../models/category")(db.sequelize, db.Sequelize);
 let wholeItem = require("../models/whole_item")(db.sequelize, db.Sequelize);
 let cart = require("../models/cart")(db.sequelize, db.Sequelize);
-let search =""
-let categoryName = ""
+let root_category = require("../models/root_category")(db.sequelize, db.Sequelize);
+let search = "";
+let userId;
+let categoryName = "";
+let jwt = require("jsonwebtoken");
 module.exports = function (app, passport) {
   //
 
-  app.get("/",function (req, res) {
-    if (search != ""){
-      getMainSearch(req,res)
+  // app.get("/",function (req, res) {
+  //   if (search != ""){
+  //     getMainSearch(req,res)
+  //   }
+  //   else if (categoryName != ""){
+  //     getMainCategory(req,res)
+  //   }
+  //   else{
+  //     getAngularMain(req,res)
+  //   }
+  // });
+
+  app.get("/category", async function (req, res) {
+    res.send(await category.findAll());
+  });
+  app.get("/root_category" , async function(req, res) {
+    res.send(await root_category.findAll())
+  })
+  app.get("/item", async function (req, res) {
+    if (categoryName != ""){
+      res.send(await wholeItem.findAll({
+        where:{
+          category:{
+            [db.Sequelize.Op.like]: "%"+categoryName+"%"
+          }
+        }
+      })); 
+      categoryName =""
     }
-    else if (categoryName != ""){
-      getMainCategory(req,res)
+    else if(search != ""){
+      res.send(await wholeItem.findAll({
+        where:{
+          name:{
+            [db.Sequelize.Op.like]: "%"+search+"%"
+          }
+        }
+      })); 
+      search = ""
+    }else {
+       res.send(await wholeItem.findAll());
     }
-    else{
-      getMain(req,res)
+   
+  });
+  app.post("/user" , async function(req , res){
+    if (!req.body.token){
+      res.send("")
+    }else{
+    res.send(jwt.verify(req.body.token , req.body.key))
     }
+  })
+app.get("/numberOfItems" , async function(req , res){
+      res.send((await getCart(req.body)).toString())
+    });
+    app.post("/numberOfItems" , async function(req , res){
+      res.send((await getCart(req.body)).toString())
+    });
+    app.get("/cart", async function (req, res) {
+      
+      user.belongsToMany(wholeItem, {
+        through: cart,
+        foreignKey: "userId",
+        otherKey: "url",
+      });
+      wholeItem.belongsToMany(user, {
+        through: cart,
+        foreignKey: "url",
+        otherKey: "userId",
+      });
+      cart.belongsTo(wholeItem, { foreignKey: "url" });
+      cart.belongsTo(user, { foreignKey: "userId" });
+      res.send(
+        await cart.findAll({
+          include: wholeItem,
+          where:{
+            userId:userId
+          }
+        })
+      );
+      userId = undefined;
+    });
+  app.post("/cart", async function (req, res) {
+    
+    user.belongsToMany(wholeItem, {
+      through: cart,
+      foreignKey: "userId",
+      otherKey: "url",
+    });
+    wholeItem.belongsToMany(user, {
+      through: cart,
+      foreignKey: "url",
+      otherKey: "userId",
+    });
+    cart.belongsTo(wholeItem, { foreignKey: "url" });
+    cart.belongsTo(user, { foreignKey: "userId" });
+    res.send(
+      await cart.findAll({
+        include: wholeItem,
+        where:{
+          userId:req.body.userId
+        }
+      })
+    );
   });
 
-  app.get("/cart", async function(req,res){
-    if (!req.user){
-      res.redirect("/")
-      return
+  // async function getMain(req,res){
+  //    res.render("index.ejs" , {
+  //           user: req.user,
+  //           category: await category.findAll(),
+  //           wholeItem: await wholeItem.findAll(),
+  //           cart:await getCart(req.user),
+  //   })
+  // }
+  // async function getMainSearch(req , res){
+  //         res.render("index.ejs", {
+  //           user: req.user,
+  //           category: await category.findAll(),
+  //           wholeItem: await wholeItem.findAll({
+  //             where:{
+  //               name:{
+  //                 [db.Sequelize.Op.like]: "%"+search+"%"
+  //               }
+  //             }
+  //           }),
+  //           cart: await getCart(req.user),
+  //         });
+  //        }
+  // async function getMainCategory(req,res){
+  //         res.render("index.ejs", {
+  //           user: req.user,
+  //           category: await category.findAll(),
+  //           wholeItem: await wholeItem.findAll({
+  //             where:{
+  //               category:{
+  //                 [db.Sequelize.Op.like]: "%"+categoryName+"%"
+  //               }
+  //             }
+  //           }),
+  //           cart:await getCart(req.user)
+  //         });
+  //       }
+  async function getCart(user) {
+    if (user) {
+      return await (
+        await cart.findAndCountAll({
+          where: {
+            userId: user.userId,
+          },
+        })
+      ).count;
     }
-    user.belongsToMany(wholeItem , {
-      through: cart,
-      foreignKey: 'userId',
-      otherKey: 'url',
-    })
-    wholeItem.belongsToMany(user , {
-      through: cart,
-      foreignKey: 'url',
-      otherKey: 'userId',
-    })
-    cart.belongsTo(wholeItem, { foreignKey: 'url' });
-    cart.belongsTo(user, { foreignKey: 'userId' });
-    console.log(await cart.findAll({
-      include:wholeItem
-    }))
-      res.render("cart.ejs" , {
-             user: req.user,
-             category: await category.findAll(),
-             wholeItem: await cart.findAll({
-              include:wholeItem
-            }),
-             cart:await getCart(req.user),
-     }) 
-   
-  })
-
-  
-  async function getMain(req,res){
-     res.render("index.ejs" , {
-            user: req.user,
-            category: await category.findAll(),
-            wholeItem: await wholeItem.findAll(),
-            cart:await getCart(req.user),
-    }) 
+    return 0;
   }
-  async function getMainSearch(req , res){
-          res.render("index.ejs", {
-            user: req.user,
-            category: await category.findAll(),
-            wholeItem: await wholeItem.findAll({
-              where:{
-                name:{
-                  [db.Sequelize.Op.like]: "%"+search+"%"
-                }
-              }
-            }),
-            cart: await getCart(req.user),
-          });
-         }
-  async function getMainCategory(req,res){
-          res.render("index.ejs", {
-            user: req.user,
-            category: await category.findAll(),
-            wholeItem: await wholeItem.findAll({
-              where:{
-                category:{
-                  [db.Sequelize.Op.like]: "%"+categoryName+"%"
-                }
-              }
-            }),
-            cart:await getCart(req.user)
-          });
-        }
-        async function getCart(user){
-          if (user){
-           return await (await cart.findAndCountAll({
-              where:{
-                userId:user.userId
-              }
-            })).count
-          }
-          return 0
-        }
   app.get("/logout", function (req, res) {
     console.log("Log Out Route Hit");
     req.session.destroy(function (err) {
       if (err) console.log(err);
-      res.redirect("/");
     });
+    res.send(["hi"])
   });
 
   app.post(
     "/",
     // wrap passport.authenticate call in a middleware function
     // call passport authentication passing the "local" strategy name and a callback function
-    passport.authenticate("local-signin", {
-      successRedirect: "/",
-      failureRedirect: "/login",
-    })
-  );
-  app.post("/add_to_cart", function(req,res){
-    if(!req.user){
-      return;
+    passport.authenticate("local-signin"),
+    async function (req, res) {
+      res.send({
+        token: jwt.sign(req.user.dataValues, req.user.password),
+        user: req.user.password,
+        cart: await getCart(req.user),
+      });
     }
-    cart.create({
+  );
+  app.post("/add_to_cart",async function(req,res){
+    await cart.create({
       url:req.body.url,
-      userId:req.user.userId
-    }).then(function(){
-      res.redirect("/");
+      userId:req.body.userId
     })
+    res.send(["hi"])
+  })
+  app.post("/add_to_items",async function(req,res){
+    console.log(req.body)
     
+    // res.send(
+    //   await cart.findAll({
+    //     include: wholeItem,
+    //     where:{
+    //       userId:req.body.userId
+    //     }
+    //   })
+    // );
+    await wholeItem.create({
+      url:req.body.url,
+      author:req.body.author,
+      name:req.body.name,
+      edition:req.body.edition,
+      price:req.body.price,
+      type:req.body.type,
+      category:(await category.findOne({
+        where:{
+          code:req.body.category
+        }
+      })).collegeName,
+      code:req.body.category,
+      numberCode:req.body.numberCode,
+      courseName:req.body.courseName
+    })
+    res.redirect("/item")
   })
   app.post("/search", function(req , res){
-    search = req.body.searched
-    res.redirect("/")
+    search = req.body.search
+    res.redirect("/item")
   })
   app.post("/get_from_category", function(req , res){
     categoryName = req.body.category
-    res.redirect("/")
+    res.redirect("/item");
   })
-  app.post("/cart" , function(req,res){
-    cart.destroy({
+  app.post("/delete_from_cart" , async function(req,res){
+
+     await cart.destroy({
       where:{
-        url:req.body.delete
+        url:req.body.delete,
+        userId: req.body.userId
       }
     })
+    userId = req.body.userId
     res.redirect("/cart")
   })
 
-  // function to call once successfully authenticated
+  // // function to call once successfully authenticated
 
-  function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) return next();
-    res.redirect("/signin");
-  }
+  // function isLoggedIn(req, res, next) {
+  //   if (req.isAuthenticated()) return next();
+  //   res.redirect("/signin");
+  // }
 };

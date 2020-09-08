@@ -8,10 +8,11 @@
 
     "database": "book",
 
-    "host": "127.0.0.1",
+    "host": "34.65.236.148",
 
-    "dialect": "mysql"
+    "dialect": "mysql",
 
+    "socketPath": "/cloudsql/kitab-288808:europe-west6:kitab"
   },
 
   "test": {
@@ -36,9 +37,11 @@
 
     "database": "",
 
-    "host": "127.0.0.1",
+    "host": "34.65.236.148",
 
-    "dialect": "mysql"
+    "dialect": "mysql",
+    
+    "socketPath": "/cloudsql/kitab-288808:europe-west6:kitab"
 
   }
 

@@ -25,11 +25,21 @@ module.exports = function(sequelize, Sequelize) {
         category: {
             type: Sequelize.STRING,
         },
+        code: {
+            type: Sequelize.STRING,
+        },
+        numberCode: {
+            type: Sequelize.STRING,
+        },
+        courseName: {
+            type: Sequelize.STRING,
+        },
     
 
     } , {
         freezeTableName: true,
-        timestamps: false
+        timestamps: false,
+        underscored: true
     });
 
     return wholeItem;

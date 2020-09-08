@@ -13,12 +13,22 @@
         },
         {
             "type": "pwa-node",
-            "name": "Run Current File",
+            "name": "express backEnd",
             "request": "launch",
-            "program": "${workspaceFolder}\\myServer.js",
+            "program": "${workspaceFolder}\\server.js",
             "serverReadyAction": {
                 "action": "openExternally"
             }
-        }
+        },    
+              {
+                "type": "chrome",
+                "request": "launch",
+                "name": "angular",
+                "url": "http://localhost:4200",
+                "webRoot": "${workspaceFolder}",
+                "serverReadyAction": {
+                    "action": "openExternally"
+                }
+              }  
     ]
 }

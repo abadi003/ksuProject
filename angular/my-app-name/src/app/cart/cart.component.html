@@ -1,0 +1,60 @@
+
+<div class="d-flex flex-row-reverse" *ngIf = "!small">
+<div class="card shadow" style="
+width: fit-content;">
+  <div class="card-body d-flex justify-content-end">
+    <h4 class="items_name my-5">total:{{ length }} item {{ totalPrice }}<strong style="color: green;"> SAR </strong> &nbsp; </h4>
+  </div>
+</div>
+</div>
+<div class="d-flex flex-row-reverse" *ngIf = "small">
+  <div class="card shadow" style="
+  width: fit-content;">
+    <div class="card-body d-flex justify-content-end">
+      <h6 class="items_name my-5">total:{{ length }} item {{ totalPrice }}<strong style="color: green;"> SAR </strong> &nbsp; </h6>
+    </div>
+  </div>
+  </div>
+<div *ngIf = "!small">
+<div class="card shadow"  *ngFor="let item of cartItem">
+  <div class="card-body d-flex justify-content-end">
+    <button
+      (click)="del(item.url)"
+      class="btn btn-sm my-5 mr-3 delete"
+      style="height: fit-content;"
+    >
+      <i class="material-icons">
+        delete_forever
+      </i>
+    </button>
+    <h3 class="items_name my-5">{{ item.whole_item.price }} <strong style="color: green;"> SAR </strong> &nbsp; </h3>
+    <h3 class="items_name my-5">{{ item.whole_item.name }}</h3>
+    <img class="imgw ml-5" src="{{ item.url }}"/>
+  </div>
+</div>
+</div>
+<div *ngIf = "small">
+  <div class="card shadow"  *ngFor="let item of cartItem">
+    <div class="card-body">
+      <div>
+      <img class="card-img-top imgw" src={{item.url}}/>
+    
+      <div>
+     <div>
+       <h5 class="items_name my-5">{{ item.whole_item.name }}</h5>
+    </div>
+    <h5 class="items_name my-5">{{ item.whole_item.price }} <strong style="color: green;"> SAR </strong> &nbsp; </h5>
+    </div>
+  </div>
+      <button
+        (click)="del(item.url)"
+        class="btn btn-sm ml-3 delete"
+        style="height: fit-content;"
+      >
+        <i class="material-icons">
+          delete_forever
+        </i>
+      </button>
+    </div>
+  </div>
+  </div>

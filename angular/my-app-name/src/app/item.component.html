@@ -1,0 +1,41 @@
+<div
+  class="card shadow mb-4 ml-4 d-inline-block"
+  *ngFor="let items of wholeItem"
+>
+  <div class="card-body" style="width: 240px; height: 308px">
+    <img
+      class="card-img-top"
+      src="{{ items.url }}"
+      style="max-width: 200px; height: 200px"
+    />
+    <div class="d-flex justify-content-between">
+      <label class="items_name my-2" pTooltip={{items.name}}  tooltipPosition="top"  [escape]="false" style="overflow: hidden;
+      text-overflow: ellipsis;
+      width: 150px;
+      white-space: nowrap;
+      direction: rtl;">{{
+        items.name
+      }}</label>
+      <button
+        class="btn btn-md add"
+        *ngIf="cartNames && cartNames.includes(items.name)"
+        (click)="refresh(items.url)"
+        style="color: rgb(0, 162, 255)"
+      >
+        <i class="material-icons">add_circle_outline</i>
+      </button>
+      <button
+        class="btn btn-md add"
+        *ngIf="cartNames && !cartNames.includes(items.name)"
+        (click)="refresh(items.url)"
+      >
+        <i class="material-icons">add_circle_outline</i>
+      </button>
+    </div>
+    <label class="items_name my-2"
+      >{{ items.price }}<strong style="color: green"> SAR</strong>
+    </label>
+  </div>
+</div>
+<!-- /.container-fluid -->
+<!-- End of Main Content -->

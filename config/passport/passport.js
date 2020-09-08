@@ -6,9 +6,10 @@ var sql = require("../../dataBase")
 // function to be called while there is a new sign/signup
 // We are using passport local signin/signup strategies for our app
 module.exports = function (passport, auth) {
-    var Auth = auth;
+    
 
     var LocalStrategy = require('passport-local').Strategy;
+    
 
     //LOCAL SIGNIN
     passport.use('local-signin', new LocalStrategy(
