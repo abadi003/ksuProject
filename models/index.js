@@ -6,11 +6,7 @@ var Sequelize = require("sequelize");
 var env = process.env.NODE_ENV || "development";
 var config = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
 const dbSocketPath = process.env.DB_SOCKET_PATH || "/cloudsql"
-var sequelize = new Sequelize({user: process.env.DB_USER, // e.g. 'my-db-user'
-    password: process.env.DB_PASS, // e.g. 'my-db-password'
-    database: process.env.DB_NAME, // e.g. 'my-database'
-    // If connecting via unix domain socket, specify the path
-    socketPath: `${dbSocketPath}/${process.env.CLOUD_SQL_CONNECTION_NAME}`,dialect: "mysql"});
+var sequelize = new Sequelize("34.65.236.148");
 var db = {};
 
 
