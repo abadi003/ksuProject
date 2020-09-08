@@ -75,6 +75,7 @@ app.use(express.json());
 try {
   db.sequelize.sync({ force: false }).then(function() {
     let User = require('./models/user') (db.sequelize , db.Sequelize);
+    console.log("hi done sync")
     let category = require ('./models/category')(db.sequelize , db.Sequelize);
     let wholeItem = require('./models/whole_item')(db.sequelize , db.Sequelize);
     let cart = require('./models/cart')(db.sequelize , db.Sequelize);
