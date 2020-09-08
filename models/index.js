@@ -7,7 +7,7 @@ var env = process.env.NODE_ENV || "development";
 var config = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
 console .log(process.env.DB_HOST)
 const dbSocketAddr = "172.17.0.1:3306".split(":")
-var sequelize = new Sequelize(await(mysql.createPool({
+var sequelize = new Sequelize(mysql.createPool({
     user: "root", // e.g. 'my-db-user'
     password: "12a n f012345", // e.g. 'my-db-password'
     database: "book", // e.g. 'my-database'
@@ -15,7 +15,7 @@ var sequelize = new Sequelize(await(mysql.createPool({
     port: dbSocketAddr[1], // e.g. '3306'
     // ... Specify additional properties here.
     ...config
-  })));
+  }));
 var db = {};
 
 
