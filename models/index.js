@@ -5,6 +5,7 @@ var path = require("path");
 var Sequelize = require("sequelize");
 var env = process.env.NODE_ENV || "development";
 var config = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
+console .log(process.env)
 const dbSocketAddr = process.env.DB_HOST.split(":")
 var sequelize = new Sequelize(await(mysql.createPool({
     user: process.env.DB_USER, // e.g. 'my-db-user'
