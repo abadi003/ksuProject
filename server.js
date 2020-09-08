@@ -72,7 +72,8 @@ app.use(express.json());
 
 // Syncing our sequelize models and then starting our Express app
 // =============================================================
-db.sequelize.sync({ force: false }).then(function() {
+try {
+  db.sequelize.sync({ force: false }).then(function() {
     let User = require('./models/user') (db.sequelize , db.Sequelize);
     let category = require ('./models/category')(db.sequelize , db.Sequelize);
     let wholeItem = require('./models/whole_item')(db.sequelize , db.Sequelize);
@@ -88,3 +89,6 @@ db.sequelize.sync({ force: false }).then(function() {
     });
     app.use(express.static("Public"));
 });
+} catch (error) {
+  console.log(error)
+}
