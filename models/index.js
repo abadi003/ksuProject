@@ -14,6 +14,26 @@ var sequelize = new Sequelize({
     host: dbSocketAddr, // e.g. '127.0.0.1'
     // ... Specify additional properties here.
     dialect: 'mysql',
+    retry: {
+        match: [
+            /ETIMEDOUT/,
+            /EHOSTUNREACH/,
+            /ECONNRESET/,
+            /ECONNREFUSED/,
+            /ETIMEDOUT/,
+            /ESOCKETTIMEDOUT/,
+            /EHOSTUNREACH/,
+            /EPIPE/,
+            /EAI_AGAIN/,
+            /SequelizeConnectionError/,
+            /SequelizeConnectionRefusedError/,
+            /SequelizeHostNotFoundError/,
+            /SequelizeHostNotReachableError/,
+            /SequelizeInvalidConnectionError/,
+            /SequelizeConnectionTimedOutError/
+        ],
+        max: 5
+    }
   });
 var db = {};
 
