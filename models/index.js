@@ -6,7 +6,7 @@ var Sequelize = require("sequelize");
 var env = process.env.NODE_ENV || "development";
 var config = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
 console .log(process.env.DB_HOST)
-const dbSocketAddr = "172.17.0.1:3306".split(":")
+const dbSocketAddr = "34.65.236.148:3306".split(":")
 var sequelize = new Sequelize({
     user: "root", // e.g. 'my-db-user'
     password: "12a n f012345", // e.g. 'my-db-password'
