@@ -4,8 +4,8 @@ var fs = require("fs");
 var path = require("path");
 var Sequelize = require("sequelize");
 var env = process.env.NODE_ENV || "development";
+console.log(env)
 var config = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
-console .log(process.env.DB_HOST)
 const dbSocketAddr = "34.65.236.148"
 var sequelize = new Sequelize(config.database , config.username , config.password , config);
 var db = {};
