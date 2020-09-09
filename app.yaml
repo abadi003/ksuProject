@@ -1,5 +1,11 @@
 runtime: nodejs12
 
+env_variables:
+  DB_USER: root
+  DB_PASS: 12a n f012345
+  DB_NAME: book
+  DB_HOST: kitab-288808:europe-west6:kitab  
+
 basic_scaling:
   max_instances: 11
   idle_timeout: 10m
@@ -9,3 +15,5 @@ resources:
   memory_gb: 0.5
   disk_size_gb: 10
 
+beta_settings:
+  cloud_sql_instances: kitab-288808:europe-west6:kitab=tcp:3306
