@@ -7,7 +7,8 @@
     "password": "12a n f012345",
 
     "database": "book",
-    "host": "/cloudsql/kitab-288808:europe-west6:kitab",
+    
+    "host": "127.0.0.1",
 
     "dialect": "mysql",
 
