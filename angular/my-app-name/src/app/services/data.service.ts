@@ -21,7 +21,7 @@ export class Data {
   user: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
   user$: Observable<any[]> = this.user.asObservable();
   getData(url: string): Observable<any[]> {
-    return this.http.get<any[]>('http://localhost:3/' + url).pipe();
+    return this.http.get<any[]>('https://kitab-288808.oa.r.appspot.com/' + url).pipe();
   }
   postData(
     url: string,
@@ -32,7 +32,7 @@ export class Data {
     }
   ): Observable<any[]> {
     return this.http
-      .post<any[]>('http://localhost:3/' + url, req, {
+      .post<any[]>('https://kitab-288808.oa.r.appspot.com/' + url, req, {
         headers: new HttpHeaders({ 'Content-type': 'application/json' }),
       })
       .pipe(catchError(this.handleError));
