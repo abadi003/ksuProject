@@ -10,11 +10,7 @@ const dbSocketAddr = "34.65.236.148"
 const sequelize = new Sequelize('book', 'root', '12a n f012345', {
     dialect: 'mysql',
     host: '/cloudsql/kitab-288808:europe-west6:kitab',
-    timestamps: false,
-    dialectOptions: {
-      socketPath: '/cloudsql/kitab-288808:europe-west6:kitab'
-  },
-  });;
+  });
 var db = {};
 
 
