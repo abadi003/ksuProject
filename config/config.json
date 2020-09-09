@@ -8,9 +8,9 @@
 
     "database": "book",
 
-    "host": "/cloudsql/kitab-288808:europe-west6:kitab",
+    "dialect": "mysql",
 
-    "dialect": "mysql" 
+    "socketPath": "/cloudsql/kitab-288808:europe-west6:kitab"
   },
 
   "test": {
