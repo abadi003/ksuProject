@@ -7,9 +7,9 @@ var env = process.env.NODE_ENV || "development";
 console.log(env)
 var config = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
 const dbSocketAddr = "34.65.236.148"
-const sequelize = new Sequelize('book', 'root', '12a n f012345', {
+const sequelize = new Sequelize('BOOK', 'root', '12A n f012345A', {
     dialect: 'mysql',
-    host: '34.65.236.148',
+    host: '127.0. 0.1',
   });
 var db = {};
 
