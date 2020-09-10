@@ -9,7 +9,6 @@ var config = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
 const dbSocketAddr = "34.65.236.148"
 const sequelize = new Sequelize('BOOK', 'root', '12A n f012345A', {
     dialect: 'mysql',
-    host: '127.0. 0.1',
   });
 var db = {};
 
