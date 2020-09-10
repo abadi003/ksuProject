@@ -4,15 +4,14 @@
 
     "username": "root",
 
-    "password": "12a n f012345",
+    "password": "12A n f012345A",
 
-    "database": "book",
+    "database": "BOOK",
     
     "host": "127.0.0.1",
 
-    "dialect": "mysql",
+    "dialect": "mysql"
 
-    "socketPath": "/cloudsql/kitab-288808:europe-west6:kitab"
   },
 
   "test": {
