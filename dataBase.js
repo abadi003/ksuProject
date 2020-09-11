@@ -5,7 +5,6 @@ var con = mysql.createConnection({
     user: "root",
     password: "12012345"
 });
-con.connect()
 exports.sql = function sql(msg , callback) {
         con.query("SELECT sha1(\"" + msg + "\")", function (err, result, fields) {
             if (err) throw err;
