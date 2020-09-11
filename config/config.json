@@ -2,13 +2,13 @@
 
   "development": {
 
-    "username": "roo",
+    "username": "root",
 
     "password": "12012345",
 
     "database": "BOOK",
     
-    "host": "127.0.0.1",
+    "host": "loclahost",
 
     "dialect": "mysql"
 
