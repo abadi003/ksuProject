@@ -8,7 +8,7 @@
 
     "database": "BOOK",
     
-    "host": "loclahost",
+    "host": "loclhost",
 
     "dialect": "mysql"
 
