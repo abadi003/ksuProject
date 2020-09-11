@@ -65,7 +65,7 @@
           "options": {
             "browserTarget": "my-app-name:build",
             "host": "165.22.74.255",
-            "port": 4200
+            "port": 80
           },
           "configurations": {
             "production": {
