@@ -6,8 +6,8 @@ import { map, catchError, tap } from 'rxjs/operators';
 
 @Injectable()
 export class Data {
-  // config = "http://165.22.74.255:3/"
-  config = "http://localhost:3/"
+  config = "http://165.22.74.255:3/"
+  // config = "http://localhost:3/"
   constructor(private http: HttpClient) {}
   private resultList: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
   wholeItem: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
