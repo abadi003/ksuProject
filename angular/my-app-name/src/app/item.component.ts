@@ -12,6 +12,7 @@ import { Observable, from } from 'rxjs';
 import { ForEach } from './services/forEach';
 import { AppComponent } from './app.component';
 import { Router, NavigationEnd } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-item',
@@ -25,6 +26,7 @@ export class ItemComponent implements OnInit, OnDestroy {
     data.forEach((data) => this.cartNames.push(data.whole_item.name))
     }
   })
+  subUser = this.data.user$.subscribe(data =>this.user = data)
   cartNames
   wholeItem
   user
@@ -34,7 +36,8 @@ export class ItemComponent implements OnInit, OnDestroy {
     private data: Data,
     private forEach: ForEach,
     private router: Router,
-    private appComponent: AppComponent
+    private appComponent: AppComponent,
+    private cook: CookieService,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.mySubscription = this.router.events.subscribe((event) => {
@@ -45,7 +48,9 @@ export class ItemComponent implements OnInit, OnDestroy {
     });
     this.data.getWholeItem()
     setTimeout(() => {
-      this.data.setCart('cart', { userId: appComponent.user.userId });
+      if (this.user){
+        this.data.setCart('cart', { userId: this.user.userId});
+      }
     }, 100);
   }
 

@@ -42,6 +42,7 @@ export class LoginModalComponent {
     this.data.getUser({ token: data['token'], key: data['user'] });
     setTimeout(() => {
       this.data.getnumberOfItems({ userId: this.appComponent.user.userId});
+      this.data.setCart("cart" ,{userId: this.appComponent.user.userId})
     }, 100);
   }
 }

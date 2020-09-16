@@ -1,6 +1,6 @@
 {
 
-  "development": {
+  "production": {
 
     "username": "root",
 
@@ -28,19 +28,17 @@
 
   },
 
-  "production": {
+  "development": {
 
-    "username": "",
+    "username": "root",
 
-    "password": null,
+    "password": "12a n f012345",
 
-    "database": "",
+    "database": "book",
 
-    "host": "34.65.236.148",
+    "host": "localhost",
 
-    "dialect": "mysql",
-    
-    "socketPath": "/cloudsql/kitab-288808:europe-west6:kitab"
+    "dialect": "mysql"
 
   }
 

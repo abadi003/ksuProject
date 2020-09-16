@@ -18,7 +18,14 @@
       }}</label>
       <button
         class="btn btn-md add"
-        *ngIf="cartNames && cartNames.includes(items.name)"
+        *ngIf="!user"
+        data-toggle="modal" data-target="#exampleModalCenter"
+      >
+        <i class="material-icons">add_circle_outline</i>
+      </button>
+      <button
+        class="btn btn-md add"
+        *ngIf="user && cartNames && cartNames.includes(items.name)"
         (click)="refresh(items.url)"
         style="color: rgb(0, 162, 255)"
       >
@@ -26,7 +33,7 @@
       </button>
       <button
         class="btn btn-md add"
-        *ngIf="cartNames && !cartNames.includes(items.name)"
+        *ngIf="user && cartNames && !cartNames.includes(items.name)"
         (click)="refresh(items.url)"
       >
         <i class="material-icons">add_circle_outline</i>

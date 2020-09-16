@@ -6,6 +6,8 @@ import { map, catchError, tap } from 'rxjs/operators';
 
 @Injectable()
 export class Data {
+  // config = "http://165.22.74.255:3/"
+  config = "http://localhost:3/"
   constructor(private http: HttpClient) {}
   private resultList: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
   wholeItem: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
@@ -21,7 +23,7 @@ export class Data {
   user: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
   user$: Observable<any[]> = this.user.asObservable();
   getData(url: string): Observable<any[]> {
-    return this.http.get<any[]>('http://165.22.74.255:3/' + url).pipe();
+    return this.http.get<any[]>(this.config + url).pipe();
   }
   postData(
     url: string,
@@ -32,7 +34,7 @@ export class Data {
     }
   ): Observable<any[]> {
     return this.http
-      .post<any[]>('http://165.22.74.255:3/' + url, req, {
+      .post<any[]>(this.config + url, req, {
         headers: new HttpHeaders({ 'Content-type': 'application/json' }),
       })
       .pipe(catchError(this.handleError));

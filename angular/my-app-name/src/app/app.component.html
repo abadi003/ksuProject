@@ -5,13 +5,13 @@
   <!-- Content Wrapper -->
   <div id="content-wrapper" class="d-flex flex-column">
     <!-- Main Content -->
-    <div id="content">
+    <div id="content" [ngClass]="menu ? 'menu_toggled' : 'hi'" style="margin-top: calc(70px + 1.5rem);">
       <!-- Topbar -->
       <nav
-        class="navbar navbar-expand navbar-light bg-gradient-primary topbar mb-4 static-top shadow"
+        class="navbar navbar-expand fixed-top navbar-light bg-gradient-primary topbar shadow"
       >
         <!-- Sidebar Toggle (Topbar) -->
-        <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+        <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3" (click)="emitClick()" >
           <i class="fa fa-bars"></i>
         </button>
 
@@ -29,7 +29,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <span class="ml-2 d-none d-lg-inline text-gray-600 small">{{
+              <span class="ml-2 d-inline text-gray-600 small">{{
                 user.name
               }}</span>
             </a>
@@ -67,7 +67,7 @@
         </ul>
         <ng-template #login>
           <a data-toggle="modal" data-target="#exampleModalCenter">
-            <span class="ml-2 d-none d-lg-inline text-gray-600 small"
+            <span class="ml-2 d-inline text-gray-600 small"
               >login</span
             >
           </a>

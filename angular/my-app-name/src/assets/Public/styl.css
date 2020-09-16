@@ -42,6 +42,22 @@
 .items_name{
 	display: table-cell;
 }
+.menu_toggled{
+	width: calc(100vw - 5.5rem);
+    align-self: flex-end;
+}
+@media (min-width: 768px){
+	.menu_toggled{
+	width: calc(100vw - 15.5rem);
+    align-self: flex-end;
+}
+}
+@media (max-width: 768px){
+	.scroll_menu{
+		overflow-y: scroll !important; 
+		height: calc(100vh - 90px) !important;
+	}
+}
 /*#icon{*/
 /*	margin-left: 23%;*/
 /*	width: 14%;*/

@@ -43,7 +43,10 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         key: this.cook.get('info'),
       });
       setTimeout(() => {
-        this.data.getnumberOfItems({ userId: this.user.userId });
+        if(this.user){
+          this.data.getnumberOfItems({ userId: this.user.userId });
+        this.data.setCart('cart', { userId: this.user.userId });
+        }
       }, 100);
     }
   }
@@ -83,6 +86,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     this.data.getData('logout').subscribe();
     this.data.getUser({});
     this.cook.deleteAll();
+    this.data.setCart("cart" , {})
   }
   searchButton(){
     this.router.navigateByUrl("/")
@@ -104,4 +108,11 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   @Output() changed: EventEmitter<string> = new EventEmitter<string>();
+
+  menu:boolean = false
+
+  emitClick(){
+    this.menu = !this.menu
+  }
+
 }

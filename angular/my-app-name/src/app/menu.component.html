@@ -1,6 +1,7 @@
 <!-- Sidebar -->
 <ul
-  class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled"
+  style="overflow-y: scroll; height: 100vh; overflow-x: hidden"
+  class="navbar-nav fixed-top bg-gradient-primary sidebar sidebar-dark accordion toggled"
   id="accordionSidebar"
 >
   <!-- Divider -->
@@ -12,7 +13,7 @@
       class="nav-link"
       href="#"
       data-toggle="collapse"
-      [attr.data-target]="replaceString('#'+root.name , ' ' , '')"
+      [attr.data-target]="replaceString('#' + root.name, ' ', '')"
       aria-expanded="true"
       aria-controls="collapsePages"
     >
@@ -20,7 +21,7 @@
       <span>{{ root.name }}</span>
     </a>
     <div
-      id='{{ root.name.split(" ").join("") }}'
+      id="{{ root.name.split(' ').join('') }}"
       class="collapse"
       aria-labelledby="headingPages"
       data-parent="#accordionSidebar"
