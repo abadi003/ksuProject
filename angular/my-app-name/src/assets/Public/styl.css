@@ -58,6 +58,16 @@
 		height: calc(100vh - 90px) !important;
 	}
 }
+.logo{
+	height: 62px;
+	margin-right: 1.5rem;
+}
+@media (max-width: 768px){
+	.logo{
+	height: 30px;
+	margin-right: 0.5rem;
+}
+}
 /*#icon{*/
 /*	margin-left: 23%;*/
 /*	width: 14%;*/

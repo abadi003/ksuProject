@@ -28,5 +28,3 @@ if(window.innerWidth<765){
   }
 });
 }
-
-

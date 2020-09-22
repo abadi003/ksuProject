@@ -17,7 +17,17 @@ import { filter } from 'rxjs/operators';
   templateUrl: 'app.component.html',
 })
 export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
-  sub = this.data.user$.subscribe((data) => (this.user = data));
+  sub = this.data.user$.subscribe((data) => {
+    if (data && data["userId"] == ""){
+      this.user = null
+      return
+    }
+    this.user = data
+    if (data){
+      this.data.getnumberOfItems({ userId: data["userId"] });
+      this.data.setCart('cart', { userId: data["userId"] });
+    }
+  });
   user;
   subCart = this.data.numberOfItem$.subscribe((data) => (this.cart = data));
   cart;
@@ -113,6 +123,11 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
 
   emitClick(){
     this.menu = !this.menu
+  }
+  homePage(){
+    if(this.getRouter() != "/"){
+      this.router.navigateByUrl("/")
+    }
   }
 
 }

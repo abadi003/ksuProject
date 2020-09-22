@@ -1,16 +1,19 @@
+<div class="alert alert-success fixed-top" role="alert" style="margin-top: 80px;" *ngIf= "success">
+  تم إضافة {{topup}}
+</div>
 <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
   <div
     class="modal fade"
-    id="exampleModalCenter"
+    id="topupModal"
     tabindex="-1"
     role="dialog"
-    aria-labelledby="exampleModalCenterTitle"
+    aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Login</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Topup</h5>
           <button
             type="button"
             class="close"
@@ -21,29 +24,18 @@
           </button>
         </div>
         <div class="modal-body">
-          <!-- فوق بعض و لا جنب بعض -->
           <input
             type="text"
-            name="id"
-            placeholder="id"
             class="form-control"
-            formControlName="id"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="password"
-            class="form-control"
-            formControlName="password"
+            placeholder="numers on the card"
+            formControlName="topup"
           />
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Close
           </button>
-          <button type="submit" class="btn btn-primary">
-            Login
-          </button>
+          <button type="submit" class="btn btn-primary">Topup</button>
         </div>
       </div>
     </div>

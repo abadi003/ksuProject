@@ -72,6 +72,7 @@ app.use(express.json());
 
 // Syncing our sequelize models and then starting our Express app
 // =============================================================
+
 try {
   db.sequelize.sync({ force: false }).then(function() {
     let User = require('./models/user') (db.sequelize , db.Sequelize);

@@ -16,7 +16,7 @@ import { CookieService } from "ngx-cookie-service"
 import {DropdownModule} from 'primeng/dropdown';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TooltipModule} from 'primeng/tooltip';
-
+import { Topup } from './topup';
 
 
 @NgModule({
@@ -26,7 +26,8 @@ import {TooltipModule} from 'primeng/tooltip';
     ItemComponent,
     LoginModalComponent,
     CartComponent,
-    AddItemModalComponent
+    AddItemModalComponent,
+    Topup
   ],
   imports: [
     BrowserModule,
@@ -38,6 +39,7 @@ import {TooltipModule} from 'primeng/tooltip';
     DropdownModule,
     BrowserAnimationsModule,
     TooltipModule
+    
   ],
   providers: [Data, ForEach , ItemComponent , CookieService , NgbModal],
   bootstrap: [AppComponent],

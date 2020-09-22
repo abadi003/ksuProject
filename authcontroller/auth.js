@@ -6,6 +6,7 @@ let category = require("../models/category")(db.sequelize, db.Sequelize);
 let wholeItem = require("../models/whole_item")(db.sequelize, db.Sequelize);
 let cart = require("../models/cart")(db.sequelize, db.Sequelize);
 let root_category = require("../models/root_category")(db.sequelize, db.Sequelize);
+let prepaid = require("../models/prepaid")(db.sequelize, db.Sequelize);
 let search = "";
 let userId;
 let categoryName = "";
@@ -58,7 +59,7 @@ module.exports = function (app, passport) {
   });
   app.post("/user" , async function(req , res){
     if (!req.body.token){
-      res.send("")
+      res.send({userId:""})
     }else{
     res.send(jwt.verify(req.body.token , req.body.key))
     }
@@ -70,7 +71,6 @@ app.get("/numberOfItems" , async function(req , res){
       res.send((await getCart(req.body)).toString())
     });
     app.get("/cart", async function (req, res) {
-      
       user.belongsToMany(wholeItem, {
         through: cart,
         foreignKey: "userId",
@@ -94,7 +94,10 @@ app.get("/numberOfItems" , async function(req , res){
       userId = undefined;
     });
   app.post("/cart", async function (req, res) {
-    
+    if (!req.body.userId){
+      res.send({userId:""})
+      return
+    }
     user.belongsToMany(wholeItem, {
       through: cart,
       foreignKey: "userId",
@@ -117,42 +120,6 @@ app.get("/numberOfItems" , async function(req , res){
     );
   });
 
-  // async function getMain(req,res){
-  //    res.render("index.ejs" , {
-  //           user: req.user,
-  //           category: await category.findAll(),
-  //           wholeItem: await wholeItem.findAll(),
-  //           cart:await getCart(req.user),
-  //   })
-  // }
-  // async function getMainSearch(req , res){
-  //         res.render("index.ejs", {
-  //           user: req.user,
-  //           category: await category.findAll(),
-  //           wholeItem: await wholeItem.findAll({
-  //             where:{
-  //               name:{
-  //                 [db.Sequelize.Op.like]: "%"+search+"%"
-  //               }
-  //             }
-  //           }),
-  //           cart: await getCart(req.user),
-  //         });
-  //        }
-  // async function getMainCategory(req,res){
-  //         res.render("index.ejs", {
-  //           user: req.user,
-  //           category: await category.findAll(),
-  //           wholeItem: await wholeItem.findAll({
-  //             where:{
-  //               category:{
-  //                 [db.Sequelize.Op.like]: "%"+categoryName+"%"
-  //               }
-  //             }
-  //           }),
-  //           cart:await getCart(req.user)
-  //         });
-  //       }
   async function getCart(user) {
     if (user) {
       return await (
@@ -191,19 +158,11 @@ app.get("/numberOfItems" , async function(req , res){
       url:req.body.url,
       userId:req.body.userId
     })
-    res.send(["hi"])
+    userId = req.body.userId
+    res.redirect("/cart")
   })
   app.post("/add_to_items",async function(req,res){
-    console.log(req.body)
-    
-    // res.send(
-    //   await cart.findAll({
-    //     include: wholeItem,
-    //     where:{
-    //       userId:req.body.userId
-    //     }
-    //   })
-    // );
+
     await wholeItem.create({
       url:req.body.url,
       author:req.body.author,
@@ -240,6 +199,34 @@ app.get("/numberOfItems" , async function(req , res){
     })
     userId = req.body.userId
     res.redirect("/cart")
+  })
+  app.post("/topup" , async function(req, res){
+    amount = (await prepaid.findOne({
+      where:{
+        pinNumber:req.body.topup
+      }
+    })).amount
+    if ((await prepaid.findOne({
+      where:{
+        pinNumber:req.body.topup
+      }
+    })).userId == null){
+      await user.update({balance:(await user.findOne({
+      where:{
+        userId:req.body.userId
+      }
+    })).balance+ await amount} , {
+      where:{
+        userId:req.body.userId
+      }
+    })
+    res.send(["success" , amount])
+    // await prepaid.update({userId:req.body.userId} , {
+    //   where:{
+    //     pinNumber:req.body.topup
+    //   }
+    // })
+    }
   })
 
   // // function to call once successfully authenticated
