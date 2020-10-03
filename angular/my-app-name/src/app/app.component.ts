@@ -1,68 +1,56 @@
 import {
   Component,
   AfterViewInit,
-  OnInit,
-  OnDestroy,
   Output,
   EventEmitter,
   Input,
 } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { from, of } from 'rxjs';
+import { Router } from '@angular/router';
 import { Data } from './services/data.service';
 import { CookieService } from 'ngx-cookie-service';
-import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
 })
-export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
+export class AppComponent implements AfterViewInit {
+  //subscribe for user
   sub = this.data.user$.subscribe((data) => {
-    if (data && data["userId"] == ""){
-      this.user = null
-      return
+    if (data && data['userId'] == '') {
+      this.user = null;
+      return;
     }
-    this.user = data
-    if (data){
-      this.data.getnumberOfItems({ userId: data["userId"] });
-      this.data.setCart('cart', { userId: data["userId"] });
+    this.user = data;
+    if (data) {
+      this.data.getnumberOfItems({ userId: data['userId'] });
+      this.data.setCart('cart', { userId: data['userId'] });
     }
   });
   user;
-  subCart = this.data.numberOfItem$.subscribe((data) => (this.cart = data));
-  cart;
 
-  mySubscription: any;
+  //subscribe that listen to changes happen on number of items on cart
+  subCart = this.data.numberOfItem$.subscribe((data) => (this.cart = data));
+
+  //number of items on cart
+  cart;
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute,
     private data: Data,
     private cook: CookieService
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.mySubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        // Trick the Router into believing it's last link wasn't previously loaded
-        this.router.navigated = false;
-      }
-    });
+    //if it is set to 1 that means nothing changed in main page , there is no need to route the user. otherwise we will route them to same page and restore everything to defult
+    cook.set('main', '1');
+
+    //if it saved in cookies that means he have loged in so we will bring his information from database by the information we saved in cookies
     if (this.cook.check('info')) {
       this.data.getUser({
         token: this.cook.get('token'),
         key: this.cook.get('info'),
       });
-      setTimeout(() => {
-        if(this.user){
-          this.data.getnumberOfItems({ userId: this.user.userId });
-        this.data.setCart('cart', { userId: this.user.userId });
-        }
-      }, 100);
     }
   }
 
-  ngOnInit() {}
-
+  //one of the life cycle called after rendering the page
   ngAfterViewInit() {
     this.loadScript('assets/Public/jquery/jquery.min.js');
     this.loadScript('assets/Public/bootstrap/js/bootstrap.bundle.min.js');
@@ -74,6 +62,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     this.loadScript('assets/Public/scriptt.js');
   }
 
+  //load javascripts beacuse it is not supported due to render delay
   public loadScript(url: string) {
     let body = <HTMLDivElement>document.body;
     let script = document.createElement('script');
@@ -84,26 +73,29 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     body.appendChild(script);
   }
 
+  //get the route
   public getRouter(): string {
     return this.router.url;
   }
-  ngOnDestroy() {
-    if (this.mySubscription) {
-      this.mySubscription.unsubscribe();
-    }
-  }
+
+  //logout the user
   logout() {
     this.data.getData('logout').subscribe();
     this.data.getUser({});
     this.cook.deleteAll();
-    this.data.setCart("cart" , {})
+    this.data.setCart('cart', {});
   }
-  searchButton(){
-    this.router.navigateByUrl("/")
+
+  //in cart route there is no search box instead we have search button
+  searchButton() {
+    this.router.navigateByUrl('/');
     setTimeout(() => {
       this.data.setWholeItem('search', { search: this._filter });
     }, 100);
   }
+
+  //listner to search box
+
   private _filter: string;
   @Input() get filter() {
     return this._filter;
@@ -112,22 +104,28 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   set filter(val: string) {
     this._filter = val;
     //Raise changed event
-    if (this.getRouter() == "/"){
+    if (this.getRouter() == '/') {
       this.data.setWholeItem('search', { search: val });
     }
   }
 
   @Output() changed: EventEmitter<string> = new EventEmitter<string>();
 
-  menu:boolean = false
+  //end of the listner
 
-  emitClick(){
-    this.menu = !this.menu
+  menu: boolean = false;
+
+  //change the menu class to change some attribute in "menu_toggled" class
+  toggleMenu() {
+    this.menu = !this.menu;
   }
-  homePage(){
-    if(this.getRouter() != "/"){
-      this.router.navigateByUrl("/")
+  //return to main page if it have been changed
+  homePage() {
+    if (this.getRouter() != '/') {
+      this.router.navigateByUrl('/');
+    } else if (this.getRouter() == '/' && this.cook.get('main') == '0') {
+      this.data.getWholeItem();
+      this.cook.set('main', '1');
     }
   }
-
 }

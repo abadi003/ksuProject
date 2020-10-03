@@ -9,24 +9,32 @@
       style="max-width: 200px; height: 200px"
     />
     <div class="d-flex justify-content-between">
-      <label class="items_name my-2" pTooltip={{items.name}}  tooltipPosition="top"  [escape]="false" style="overflow: hidden;
-      text-overflow: ellipsis;
-      width: 150px;
-      white-space: nowrap;
-      direction: rtl;">{{
-        items.name
-      }}</label>
+      <label
+        class="items_name my-2"
+        pTooltip="{{ items.name }}"
+        tooltipPosition="top"
+        [escape]="false"
+        style="
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 150px;
+          white-space: nowrap;
+          direction: rtl;
+        "
+        >{{ items.name }}</label
+      >
       <button
         class="btn btn-md add"
         *ngIf="!user"
-        data-toggle="modal" data-target="#exampleModalCenter"
+        data-toggle="modal"
+        data-target="#exampleModalCenter"
       >
         <i class="material-icons">add_circle_outline</i>
       </button>
       <button
         class="btn btn-md add"
         *ngIf="user && cartNames && cartNames.includes(items.name)"
-        (click)="refresh(items.url)"
+        (click)="addToCart(items.url)"
         style="color: rgb(0, 162, 255)"
       >
         <i class="material-icons">add_circle_outline</i>
@@ -34,7 +42,7 @@
       <button
         class="btn btn-md add"
         *ngIf="user && cartNames && !cartNames.includes(items.name)"
-        (click)="refresh(items.url)"
+        (click)="addToCart(items.url)"
       >
         <i class="material-icons">add_circle_outline</i>
       </button>

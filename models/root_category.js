@@ -8,6 +8,9 @@ module.exports = function(sequelize, Sequelize) {
                 
             },
         
+            icon: {
+                type: Sequelize.STRING,
+            },
     
         } , {
             freezeTableName: true,

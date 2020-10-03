@@ -1,4 +1,9 @@
-<div class="alert alert-success fixed-top" role="alert" style="margin-top: 80px;" *ngIf= "success">
+<div
+  class="alert alert-success fixed-top"
+  role="alert"
+  style="margin-top: 80px"
+  *ngIf="success"
+>
   تم إضافة {{topup}}
 </div>
 <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
@@ -13,7 +18,9 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
+          
           <h5 class="modal-title" id="exampleModalLabel">Topup</h5>
+          
           <button
             type="button"
             class="close"
@@ -23,6 +30,13 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <div
+            class="alert alert-danger d-flex justify-content-center"
+            role="alert"
+            *ngIf="failure"
+          >
+            تم استخدام رمز التفعيل من قبل
+          </div>
         <div class="modal-body">
           <input
             type="text"

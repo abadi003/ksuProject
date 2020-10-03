@@ -1,57 +1,42 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { Data } from './services/data.service';
-import { Observable } from 'rxjs';
-import { ForEach } from './services/forEach';
-import { ItemComponent } from './item.component';
-import { Router, NavigationEnd } from '@angular/router';
-import { SafeResourceUrl } from '@angular/platform-browser';
-
+import { Router} from '@angular/router';
+import { CookieService } from "ngx-cookie-service";
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
 })
-export class MenuComponent implements OnInit {
-  sub = this.data.category$.subscribe(data=>this.category = data)
-  rootSub = this.data.root$.subscribe(data=>this.root = data)
+export class MenuComponent {
+
+  sub = this.data.category$.subscribe((data) => this.category = data);
+  rootSub = this.data.root$.subscribe((data) => (this.root = data));
   category;
   root;
-  mySubscription: any;
-
   constructor(
     private data: Data,
-    private forEach: ForEach,
-    private router: Router
+    private router: Router,
+    private cookie:CookieService
   ) {
-    this.data.getCategory();
     this.data.getRoot();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.mySubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        // Trick the Router into believing it's last link wasn't previously loaded
-        this.router.navigated = false;
-      }
-    });
   }
 
-  ngOnInit() {
-    // this.data
-    //   .getData('category')
-    //   .subscribe((data: Array<Object>) =>
-    //     this.forEach.forEach(data, this.category, ['name'])
-    //   );
-  }
+  //categorize the item if it is in main page , otherwise route the user before categorize the items
   categorize(name) {
-    if (this.router.url != "/"){
-       this.router.navigateByUrl("/")
-    setTimeout(() => {
-      this.data.setWholeItem('get_from_category', { category: name });
-    }, 100);
-    }else{
+    this.cookie.set("main" , "0")
+    if (this.router.url != '/') {
+      this.router.navigateByUrl('/');
+      setTimeout(() => {
+        this.data.setWholeItem('get_from_category', { category: name });
+      }, 100);
+    } else {
       this.data.setWholeItem('get_from_category', { category: name });
     }
   }
 
-  replaceString(word : string , char : string , replacer : string){
-   return word.split(char).join(replacer)
+  //call  subcategory from database
+  expand(name) {
+    this.data.getCategory({ name: name });
   }
+ 
 }

@@ -5,7 +5,10 @@ const user = require("../models/user")(db.sequelize, db.Sequelize);
 let category = require("../models/category")(db.sequelize, db.Sequelize);
 let wholeItem = require("../models/whole_item")(db.sequelize, db.Sequelize);
 let cart = require("../models/cart")(db.sequelize, db.Sequelize);
-let root_category = require("../models/root_category")(db.sequelize, db.Sequelize);
+let root_category = require("../models/root_category")(
+  db.sequelize,
+  db.Sequelize
+);
 let prepaid = require("../models/prepaid")(db.sequelize, db.Sequelize);
 let search = "";
 let userId;
@@ -26,77 +29,112 @@ module.exports = function (app, passport) {
   //   }
   // });
 
-  app.get("/category", async function (req, res) {
-    res.send(await category.findAll());
+  app.post("/category", async function (req, res) {
+    res.send(await category.findAll({
+      where:{
+        collegeName:req.body.name
+      }
+    }));
   });
-  app.get("/root_category" , async function(req, res) {
-    res.send(await root_category.findAll())
-  })
+  app.get("/root_category", async function (req, res) {
+    res.send(await root_category.findAll());
+  });
   app.get("/item", async function (req, res) {
-    if (categoryName != ""){
-      res.send(await wholeItem.findAll({
-        where:{
-          category:{
-            [db.Sequelize.Op.like]: "%"+categoryName+"%"
-          }
-        }
-      })); 
-      categoryName =""
-    }
-    else if(search != ""){
-      res.send(await wholeItem.findAll({
-        where:{
-          name:{
-            [db.Sequelize.Op.like]: "%"+search+"%"
-          }
-        }
-      })); 
-      search = ""
-    }else {
-       res.send(await wholeItem.findAll());
-    }
-   
-  });
-  app.post("/user" , async function(req , res){
-    if (!req.body.token){
-      res.send({userId:""})
-    }else{
-    res.send(jwt.verify(req.body.token , req.body.key))
-    }
-  })
-app.get("/numberOfItems" , async function(req , res){
-      res.send((await getCart(req.body)).toString())
-    });
-    app.post("/numberOfItems" , async function(req , res){
-      res.send((await getCart(req.body)).toString())
-    });
-    app.get("/cart", async function (req, res) {
-      user.belongsToMany(wholeItem, {
-        through: cart,
-        foreignKey: "userId",
-        otherKey: "url",
-      });
-      wholeItem.belongsToMany(user, {
-        through: cart,
-        foreignKey: "url",
-        otherKey: "userId",
-      });
-      cart.belongsTo(wholeItem, { foreignKey: "url" });
-      cart.belongsTo(user, { foreignKey: "userId" });
+    if (categoryName != "") {
       res.send(
-        await cart.findAll({
-          include: wholeItem,
-          where:{
-            userId:userId
-          }
+        await wholeItem.findAll({
+          where: {
+            category: {
+              [db.Sequelize.Op.like]: "%" + categoryName + "%",
+            },
+          },
         })
       );
-      userId = undefined;
+      categoryName = "";
+    } else if (search != "") {
+      res.send(
+        await wholeItem.findAll({
+          where: {
+            [db.Sequelize.Op.or]: [
+              {
+                name: {
+                  [db.Sequelize.Op.like]: "%" + search + "%",
+                },
+              },
+              {
+                author: {
+                  [db.Sequelize.Op.like]: "%" + search + "%",
+                },
+              },
+              {
+                category: {
+                  [db.Sequelize.Op.like]: "%" + search + "%",
+                },
+              },
+              {
+                code: {
+                  [db.Sequelize.Op.like]: "%" + search + "%",
+                },
+              },
+              {
+                numberCode: {
+                  [db.Sequelize.Op.like]:  search + "%",
+                },
+              },
+              {
+                courseName: {
+                  [db.Sequelize.Op.like]: "%" + search + "%",
+                },
+              },
+            ],
+          },
+        })
+      );
+      search = "";
+    } else {
+      res.send(await wholeItem.findAll());
+    }
+  });
+  app.post("/user", async function (req, res) {
+    if (!req.body.token) {
+      res.send({ userId: "" });
+    } else {
+      res.send(jwt.verify(req.body.token, req.body.key));
+    }
+  });
+  app.get("/numberOfItems", async function (req, res) {
+    res.send((await getCart(req.body)).toString());
+  });
+  app.post("/numberOfItems", async function (req, res) {
+    res.send((await getCart(req.body)).toString());
+  });
+  app.get("/cart", async function (req, res) {
+    user.belongsToMany(wholeItem, {
+      through: cart,
+      foreignKey: "userId",
+      otherKey: "url",
     });
+    wholeItem.belongsToMany(user, {
+      through: cart,
+      foreignKey: "url",
+      otherKey: "userId",
+    });
+    cart.belongsTo(wholeItem, { foreignKey: "url" });
+    cart.belongsTo(user, { foreignKey: "userId" });
+    res.send(
+      await cart.findAll({
+        include: wholeItem,
+        where: {
+          userId: userId,
+        },
+      })
+    );
+    userId = undefined;
+  });
   app.post("/cart", async function (req, res) {
-    if (!req.body.userId){
-      res.send({userId:""})
-      return
+    if (!req.body.userId) {
+      res.send({ userId: "" });
+      return;
     }
     user.belongsToMany(wholeItem, {
       through: cart,
@@ -113,9 +151,9 @@ app.get("/numberOfItems" , async function(req , res){
     res.send(
       await cart.findAll({
         include: wholeItem,
-        where:{
-          userId:req.body.userId
-        }
+        where: {
+          userId: req.body.userId,
+        },
       })
     );
   });
@@ -137,7 +175,7 @@ app.get("/numberOfItems" , async function(req , res){
     req.session.destroy(function (err) {
       if (err) console.log(err);
     });
-    res.send(["hi"])
+    res.send(["hi"]);
   });
 
   app.post(
@@ -153,81 +191,100 @@ app.get("/numberOfItems" , async function(req , res){
       });
     }
   );
-  app.post("/add_to_cart",async function(req,res){
+  app.post("/add_to_cart", async function (req, res) {
     await cart.create({
-      url:req.body.url,
-      userId:req.body.userId
-    })
-    userId = req.body.userId
-    res.redirect("/cart")
-  })
-  app.post("/add_to_items",async function(req,res){
-
+      url: req.body.url,
+      userId: req.body.userId,
+    });
+    userId = req.body.userId;
+    res.redirect("/cart");
+  });
+  app.post("/add_to_items", async function (req, res) {
     await wholeItem.create({
-      url:req.body.url,
-      author:req.body.author,
-      name:req.body.name,
-      edition:req.body.edition,
-      price:req.body.price,
-      type:req.body.type,
-      category:(await category.findOne({
-        where:{
-          code:req.body.category
-        }
-      })).collegeName,
-      code:req.body.category,
-      numberCode:req.body.numberCode,
-      courseName:req.body.courseName
-    })
-    res.redirect("/item")
-  })
-  app.post("/search", function(req , res){
-    search = req.body.search
-    res.redirect("/item")
-  })
-  app.post("/get_from_category", function(req , res){
-    categoryName = req.body.category
+      url: req.body.url,
+      author: req.body.author,
+      name: req.body.name,
+      edition: req.body.edition,
+      price: req.body.price,
+      type: req.body.type,
+      category: (
+        await category.findOne({
+          where: {
+            code: req.body.category,
+          },
+        })
+      ).name,
+      code: req.body.category,
+      numberCode: req.body.numberCode,
+      courseName: req.body.courseName,
+    });
     res.redirect("/item");
-  })
-  app.post("/delete_from_cart" , async function(req,res){
-
-     await cart.destroy({
-      where:{
-        url:req.body.delete,
-        userId: req.body.userId
-      }
-    })
-    userId = req.body.userId
-    res.redirect("/cart")
-  })
-  app.post("/topup" , async function(req, res){
-    amount = (await prepaid.findOne({
-      where:{
-        pinNumber:req.body.topup
-      }
-    })).amount
-    if ((await prepaid.findOne({
-      where:{
-        pinNumber:req.body.topup
-      }
-    })).userId == null){
-      await user.update({balance:(await user.findOne({
-      where:{
-        userId:req.body.userId
-      }
-    })).balance+ await amount} , {
-      where:{
-        userId:req.body.userId
-      }
-    })
-    res.send(["success" , amount])
-    // await prepaid.update({userId:req.body.userId} , {
-    //   where:{
-    //     pinNumber:req.body.topup
-    //   }
-    // })
+  });
+  app.post("/search", function (req, res) {
+    search = req.body.search;
+    res.redirect("/item");
+  });
+  app.post("/get_from_category", function (req, res) {
+    categoryName = req.body.category;
+    res.redirect("/item");
+  });
+  app.post("/delete_from_cart", async function (req, res) {
+    await cart.destroy({
+      where: {
+        url: req.body.delete,
+        userId: req.body.userId,
+      },
+    });
+    userId = req.body.userId;
+    res.redirect("/cart");
+  });
+  app.post("/topup", async function (req, res) {
+    amount = (
+      await prepaid.findOne({
+        where: {
+          pinNumber: req.body.topup,
+        },
+      })
+    ).amount;
+    if (
+      (
+        await prepaid.findOne({
+          where: {
+            pinNumber: req.body.topup,
+          },
+        })
+      ).userId == null
+    ) {
+      await user.update(
+        {
+          balance:
+            (
+              await user.findOne({
+                where: {
+                  userId: req.body.userId,
+                },
+              })
+            ).balance + (await amount),
+        },
+        {
+          where: {
+            userId: req.body.userId,
+          },
+        }
+      );
+      await prepaid.update(
+        { userId: req.body.userId },
+        {
+          where: {
+            pinNumber: req.body.topup,
+          },
+        }
+      );
+      res.send(["success", amount]);
+    } else {
+      res.send(["failure"]);
     }
-  })
+  });
 
   // // function to call once successfully authenticated
 

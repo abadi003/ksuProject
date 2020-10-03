@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { Data } from './services/data.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
@@ -9,18 +9,12 @@ import * as mod from 'bootstrap';
   templateUrl: './loginModal.component.html',
 })
 export class LoginModalComponent {
-  subUser = this.data.user$.subscribe((data) => {
-    if (data && !data[""]) {
-      this.data.getnumberOfItems({ userId: data['userId'] });
-      this.data.setCart('cart', { userId: data['userId'] });
-    }
-  });
   checkoutForm;
   visible: boolean = true;
   constructor(
     private formBuilder: FormBuilder,
     private data: Data,
-    private cook: CookieService,
+    private cook: CookieService
   ) {
     this.checkoutForm = this.formBuilder.group({
       id: ['', Validators.required],
@@ -28,6 +22,7 @@ export class LoginModalComponent {
     });
   }
 
+  //listener to submitting
   onSubmit(req) {
     if (!req.id || !req.password) {
       return;
@@ -37,9 +32,11 @@ export class LoginModalComponent {
     });
     $('#exampleModalCenter').modal('hide');
   }
+
+  //listner to submitting , store information into cookiese
   setItem(data: Array<Object>) {
     this.cook.set('token', data['token'], 1);
     this.cook.set('info', data['user'], 1);
-    this.data.getUser({ token: data['token'], key: data['user']});
+    this.data.getUser({ token: data['token'], key: data['user'] });
   }
 }

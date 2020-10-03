@@ -19,7 +19,7 @@
         <button
           id="sidebarToggleTop"
           class="btn btn-link rounded-circle mr-3"
-          (click)="emitClick()"
+          (click)="toggleMenu()"
         >
           <i class="fa fa-bars"></i>
         </button>
@@ -44,7 +44,8 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <span class="ml-2 d-inline text-gray-600 small">{{
+            <i class="d-lg-none fa fa-user"></i>
+              <span class="ml-2 d-none d-lg-inline text-gray-600 small">{{
                 user.name
               }}</span>
             </a>
@@ -294,8 +295,7 @@
           </div>
         </form>
       </nav>
-      <router-outlet *ngIf="getRouter() == '/cart'"></router-outlet>
-      <app-item *ngIf="getRouter() == '/'"></app-item>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

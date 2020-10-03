@@ -30,9 +30,18 @@ import { CookieService } from 'ngx-cookie-service';
     }
     onSubmit(req){
       this.data.postData("topup" , {userId:this.user.userId , topup:req.topup}).subscribe(data => {
+        console.log(data)
         if(data[0] == "success"){
           this.success = true
           this.topup = data[1]
+          setTimeout(() => {
+            this.success = false
+          }, 7000);
+        }else if(data[0] == "failure"){
+          this.failure = true
+          setTimeout(() => {
+            this.failure = false
+          }, 7000);
         }
       })
     }

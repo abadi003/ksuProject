@@ -10,14 +10,16 @@
   <!-- Nav Item - Dashboard -->
   <li class="nav-item" *ngFor="let root of root">
     <a
+    role="button"
+    (click) = "expand(root.name)"
       class="nav-link"
       href="#"
       data-toggle="collapse"
-      [attr.data-target]="replaceString('#' + root.name, ' ', '')"
+      [attr.data-target]=" '#' + root.name.split(' ').join('')"
       aria-expanded="true"
       aria-controls="collapsePages"
     >
-      <i class="fas fa-fw fa-folder"></i>
+      <i class="{{ root.icon }}"></i>
       <span>{{ root.name }}</span>
     </a>
     <div
@@ -30,8 +32,8 @@
         <div *ngFor="let category of category">
           <a
             class="collapse-item"
-            href="login.html"
-            *ngIf="category.collegeName == root.name"
+            role="button"
+            (click)="categorize(category.name)"
           >
             {{ category.name }}
           </a>
