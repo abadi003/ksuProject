@@ -4,7 +4,7 @@
   style="margin-top: 80px"
   *ngIf="success"
 >
-  تم إضافة {{topup}}
+  {{"تم إضافة"|translate}} {{topup}}
 </div>
 <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
   <div
@@ -35,21 +35,21 @@
             role="alert"
             *ngIf="failure"
           >
-            تم استخدام رمز التفعيل من قبل
+            {{"تم استخدام رمز التفعيل من قبل"|translate}}
           </div>
         <div class="modal-body">
           <input
             type="text"
             class="form-control"
-            placeholder="numers on the card"
+            placeholder='{{"numbers on the card"|translate}}'
             formControlName="topup"
           />
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Close
+            {{"Close"|translate}}
           </button>
-          <button type="submit" class="btn btn-primary">Topup</button>
+          <button type="submit" class="btn btn-primary">{{"Topup"|translate}}</button>
         </div>
       </div>
     </div>

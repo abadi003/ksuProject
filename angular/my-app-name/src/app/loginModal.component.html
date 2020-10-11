@@ -20,30 +20,67 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <div
+          class="alert alert-danger d-flex justify-content-center"
+          role="alert"
+          *ngIf="failure"
+        >
+        {{message|translate}}
+        </div>
         <div class="modal-body">
           <!-- فوق بعض و لا جنب بعض -->
-          <input
-            type="text"
-            name="id"
-            placeholder="id"
-            class="form-control"
-            formControlName="id"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="password"
-            class="form-control"
-            formControlName="password"
-          />
+          <mat-form-field style="width: 100%">
+            <input
+              matInput
+              placeholder="{{'ID'|translate}}"
+              type="text"
+              formControlName="id"
+              required
+            />
+            <mat-hint>{{
+              "Please Enter your ID" | translate
+            }}</mat-hint>
+          </mat-form-field>
+          <mat-form-field style="width: 100%">
+            <input
+              matInput
+              placeholder="{{'Password'|translate}}"
+              [type]="hide ? 'password' : 'text'"
+              formControlName="password"
+              required
+            />
+            <mat-icon matSuffix (click)="hide = !hide">{{
+              hide ? "visibility_off" : "visibility"
+            }}</mat-icon>
+            <mat-hint
+              >{{"Please Enter your password"|translate}}</mat-hint
+            >
+          </mat-form-field>
+          <input type="checkbox" formControlName = "keepMe" (click) = "disable()">
+          {{"Keep me signed in for"|translate}}
+        <mat-form-field  style="width: 3.4rem; margin-right: 1.5rem;">
+            <input
+              matInput
+              min="1"
+              max="365"
+              placeholder='{{"Days"|translate}}'
+              type="number"
+              formControlName="days"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select formControlName = "daysSelect">
+          <mat-option  *ngFor="let time of daysSelect" [value]="time.value">
+              {{time.label|translate}}
+            </mat-option>
+        </mat-select>
+          </mat-form-field>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Close
+            {{"Close"|translate}}
           </button>
-          <button type="submit" class="btn btn-primary">
-            Login
-          </button>
+          <button type="submit" class="btn btn-primary">{{"Login"|translate}}</button>
         </div>
       </div>
     </div>

@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { ItemComponent } from '../item.component';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, from } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
+import { TranslationKeyValues } from '../interfaces';
+import { CookieService } from 'ngx-cookie-service';
+import { TranslateLoader, TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class Data {
-  config = "http://165.22.74.255:3/"
-  // config = "http://localhost:3/"
+  // config = "http://165.22.74.255:3/"
+  config = 'http://localhost:3/';
   constructor(private http: HttpClient) {}
   private resultList: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
   wholeItem: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
@@ -25,10 +28,7 @@ export class Data {
   getData(url: string): Observable<any[]> {
     return this.http.get<any[]>(this.config + url).pipe();
   }
-  postData(
-    url: string,
-    req
-  ): Observable<any[]> {
+  postData(url: string, req): Observable<any[]> {
     return this.http
       .post<any[]>(this.config + url, req, {
         headers: new HttpHeaders({ 'Content-type': 'application/json' }),
@@ -39,11 +39,11 @@ export class Data {
     console.error('server error:', error);
     if (error.error instanceof Error) {
       const errMessage = error.error.message;
-      return Observable.throw(errMessage);
+      return [errMessage]
       // Use the following instead if using lite-server
       // return Observable.throw(err.text() || 'backend server error');
     }
-    return Observable.throw(error || 'Node.js server error');
+    return [error||'Node.js server error']
   }
   public getWholeItem() {
     this.getData('item').subscribe((data) => this.wholeItem.next(data));
@@ -52,12 +52,14 @@ export class Data {
     this.postData(url, req).subscribe((data) => this.wholeItem.next(data));
   }
   public getCategory(req) {
-    this.postData('category' , req).subscribe(data => this.category.next(data));
+    this.postData('category', req).subscribe((data) =>
+      this.category.next(data)
+    );
   }
   public getRoot() {
-    this.getData('root_category').subscribe(data => this.root.next(data));
+    this.getData('root_category').subscribe((data) => this.root.next(data));
   }
-  public setCart(url , req) {
+  public setCart(url, req) {
     this.postData(url, req).subscribe((data) => this.cart.next(data));
   }
   public getnumberOfItems(req) {
@@ -77,5 +79,93 @@ export class Data {
       target.push(temp);
     });
     return target;
+  }
+}
+export class Languages {
+  readonly current: string;
+  readonly other: string[];
+  private constructor(currentLanguage: string, supportedLanguages: string[]) {
+    this.current = currentLanguage;
+    this.other = supportedLanguages.filter(
+      (supportedLanguage) => supportedLanguage !== currentLanguage
+    );
+  }
+  static from(
+    currentLanguage: string,
+    supportedLanguages: string[]
+  ): Languages {
+    return new Languages(currentLanguage, supportedLanguages);
+  }
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class TranslationService {
+  constructor(private httpClient: HttpClient) {}
+  getTranslation(language: string): Observable<TranslationKeyValues> {
+    return from(this.getLanguageTranslationsRequest(language));
+  }
+  private getLanguageTranslationsRequest(
+    language: string
+  ): Promise<TranslationKeyValues> {
+    setTimeout(() => {
+      console.log(language);
+    }, 1000);
+    return this.httpClient
+      .get<TranslationKeyValues>(`assets/translation/${language}.json`)
+      .toPromise();
+  }
+}
+export class CustomTranslateLoader implements TranslateLoader {
+  private constructor(private translationService: TranslationService) {}
+  static of(translationService: TranslationService) {
+    return new CustomTranslateLoader(translationService);
+  }
+  getTranslation(language: string): Observable<TranslationKeyValues> {
+    return this.translationService.getTranslation(language);
+  }
+}
+export function CustomTranslateLoaderFactory(
+  translationService: TranslationService
+) {
+  return CustomTranslateLoader.of(translationService);
+}
+/* 
+Just call this.languageService.updateCurrentLanguage(language); to switch language 
+*/
+@Injectable({
+  providedIn: 'root',
+})
+export class LanguageService {
+  private readonly LANGUAGE_COOKIE = 'website.locale';
+  private languagesSubject: BehaviorSubject<Languages>;
+  constructor(
+    private translateService: TranslateService,
+    private cookieService: CookieService
+  ) {
+    const currentLanguage =
+      cookieService.get(this.LANGUAGE_COOKIE) ||
+      this.translateService.getDefaultLang();
+    this.languagesSubject = new BehaviorSubject<Languages>(
+      this.getLanguages(currentLanguage)
+    );
+    this.translateService.use(currentLanguage);
+  }
+  getCurrentAndOtherLanguages$(): Observable<Languages> {
+    return this.languagesSubject.asObservable();
+  }
+  updateCurrentLanguage(currentLanguage: string): void {
+    this.cookieService.set(this.LANGUAGE_COOKIE, currentLanguage);
+    this.translateService.use(currentLanguage);
+    this.languagesSubject.next(this.getLanguages(currentLanguage));
+  }
+  private getLanguages(currentLanguage: string): Languages {
+    setTimeout(() => {
+      console.log('hi');
+    }, 1000);
+    return Languages.from(
+      currentLanguage,
+      Array(this.translateService.getBrowserLang())
+    );
   }
 }

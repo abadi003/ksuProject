@@ -6,13 +6,21 @@ import {
   Input,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Data } from './services/data.service';
+import { Data , TranslationService } from './services/data.service';
 import { CookieService } from 'ngx-cookie-service';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
 })
 export class AppComponent implements AfterViewInit {
+
+  subItem = this.data.cart$.subscribe(data => {
+    if (this.user){
+       this.data.getnumberOfItems({userId: this.user.userId})
+    }
+  })
+
   //subscribe for user
   sub = this.data.user$.subscribe((data) => {
     if (data && data['userId'] == '') {
@@ -21,7 +29,6 @@ export class AppComponent implements AfterViewInit {
     }
     this.user = data;
     if (data) {
-      this.data.getnumberOfItems({ userId: data['userId'] });
       this.data.setCart('cart', { userId: data['userId'] });
     }
   });
@@ -36,8 +43,14 @@ export class AppComponent implements AfterViewInit {
   constructor(
     private router: Router,
     private data: Data,
-    private cook: CookieService
+    private cook: CookieService,
+    private translate: TranslateService,
+    private trans: TranslationService
   ) {
+    this.useLang()
+    
+    
+
     //if it is set to 1 that means nothing changed in main page , there is no need to route the user. otherwise we will route them to same page and restore everything to defult
     cook.set('main', '1');
 
@@ -82,7 +95,8 @@ export class AppComponent implements AfterViewInit {
   logout() {
     this.data.getData('logout').subscribe();
     this.data.getUser({});
-    this.cook.deleteAll();
+    this.cook.delete("info");
+    this.cook.delete("token");
     this.data.setCart('cart', {});
   }
 
@@ -126,6 +140,27 @@ export class AppComponent implements AfterViewInit {
     } else if (this.getRouter() == '/' && this.cook.get('main') == '0') {
       this.data.getWholeItem();
       this.cook.set('main', '1');
+    }
+  }
+
+  //this function knows what lang to use
+  useLang(){
+    if (this.cook.get("lang") == ""){
+      this.translate.use(this.translate.getBrowserLang());
+      this.cook.set("lang" , this.translate.getBrowserLang())
+    }else{
+      this.translate.use(this.cook.get("lang"));
+    }
+  }
+
+  //change Lang
+  changeLang(){
+    if (this.cook.get("lang") == "ar"){
+      this.cook.set("lang" , "en")
+      this.useLang()
+    }else if (this.cook.get("lang") == "en"){
+      this.cook.set("lang" , "ar")
+      this.useLang()
     }
   }
 }

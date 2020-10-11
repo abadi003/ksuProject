@@ -6,6 +6,7 @@ import { Data } from '../services/data.service';
   templateUrl: './cart.component.html',
 })
 export class CartComponent implements OnInit {
+  item
   subUser = this.data.user$.subscribe((data) => {
     this.user = data;
   });
@@ -14,12 +15,16 @@ export class CartComponent implements OnInit {
   sub = this.data.cart$.subscribe((data) => {
     this.cartItem = data;
     if (data) {
-      this.data.getnumberOfItems({ userId: this.user.userId });
       this.length = data.length;
-      this.totalPrice = 0;
-      for (let i = 0; i < data.length; ++i) {
-        this.totalPrice += data[i].whole_item.price;
+      if (data.length<2){
+        this.item = "item"
+      }else{
+        this.item = "items"
       }
+      this.totalPrice = 0;
+      data.forEach(price => {
+        this.totalPrice += price.whole_item.price
+      });
     }
   });
   user;
@@ -29,7 +34,7 @@ export class CartComponent implements OnInit {
   length;
 
   //total price for in the cart
-  totalPrice = 0;
+  totalPrice:number
 
   //flag indicates whether screen width is smaller than 576px
   small = false;

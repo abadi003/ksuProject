@@ -184,6 +184,7 @@ module.exports = function (app, passport) {
     // call passport authentication passing the "local" strategy name and a callback function
     passport.authenticate("local-signin"),
     async function (req, res) {
+      console.log(req.user)
       res.send({
         token: jwt.sign(req.user.dataValues, req.user.password),
         user: req.user.password,
@@ -239,21 +240,12 @@ module.exports = function (app, passport) {
     res.redirect("/cart");
   });
   app.post("/topup", async function (req, res) {
-    amount = (
-      await prepaid.findOne({
-        where: {
-          pinNumber: req.body.topup,
-        },
-      })
-    ).amount;
-    if (
-      (
-        await prepaid.findOne({
-          where: {
-            pinNumber: req.body.topup,
-          },
-        })
-      ).userId == null
+    let topup = await prepaid.findOne({
+      where: {
+        pinNumber: req.body.topup,
+      },
+    })
+    if (topup && topup.userId == null
     ) {
       await user.update(
         {

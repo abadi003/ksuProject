@@ -1,7 +1,6 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { Data } from './services/data.service';
 import { Observable } from 'rxjs';
-import { ForEach } from './services/forEach';
 import { ItemComponent } from './item.component';
 import { Router, NavigationEnd } from '@angular/router';
 import { SelectItem , SelectItemGroup } from 'primeng/api';
