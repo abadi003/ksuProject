@@ -67,7 +67,9 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "my-app-name:build"
+            "browserTarget": "my-app-name:build",
+            "host": "http://www.safahaty.com/",
+            "port": 80
           },
           "configurations": {
             "production": {
