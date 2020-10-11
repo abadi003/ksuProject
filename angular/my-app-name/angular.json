@@ -73,9 +73,7 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "my-app-name:build:production",
-              "host": "165.22.74.255",
-              "port": 80
+              "browserTarget": "my-app-name:build:production"
             }
           }
         },
