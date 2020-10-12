@@ -67,9 +67,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "my-app-name:build",
-            "host": "165.22.74.255",
-            "port": 80
+            "browserTarget": "my-app-name:build"
           },
           "configurations": {
             "production": {
@@ -92,7 +90,8 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/.well-known"
             ],
             "styles": [
               "src/styles.css"

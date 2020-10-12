@@ -6,6 +6,7 @@ import { Data } from './services/data.service';
   templateUrl: './item.component.html',
 })
 export class ItemComponent {
+  failure:boolean = false
   subUser = this.data.user$.subscribe((data) => {
     if (data && data['userId'] != '') {
       this.user = data;
@@ -18,6 +19,14 @@ export class ItemComponent {
   subCart = this.data.cart$.subscribe((cart) => {
     if (this.user) {
       if (cart) {
+        if (cart[0] && cart[0]["errors"]){
+          this.failure = true
+          setTimeout(() => {
+            this.failure = false
+          }, 7000);
+          this.data.setCart('cart', { userId: this.user.userId });
+          return
+        }
         this.cartNames = [];
         try {
           cart.forEach((data) => this.cartNames.push(data.whole_item.name));

@@ -193,12 +193,22 @@ module.exports = function (app, passport) {
     }
   );
   app.post("/add_to_cart", async function (req, res) {
-    await cart.create({
+     let error
+      await cart.create({
       url: req.body.url,
       userId: req.body.userId,
+    }).catch(function(err){
+      error = err
+ res.send([err])
     });
-    userId = req.body.userId;
+  
+    if (!error){
+      userId = req.body.userId;
     res.redirect("/cart");
+    }else{
+      error = undefined
+    }
+    
   });
   app.post("/add_to_items", async function (req, res) {
     await wholeItem.create({

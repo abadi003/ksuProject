@@ -1,4 +1,12 @@
 <div
+  class="alert alert-success fixed-top d-flex justify-content-center"
+  role="alert"
+  style="margin-top: 80px"
+  *ngIf="failure"
+>
+  {{"هذه القطعة موجودة في السلة"|translate}}
+</div>
+<div
   class="card shadow mb-4 ml-4 d-inline-block"
   *ngFor="let items of wholeItem"
 >

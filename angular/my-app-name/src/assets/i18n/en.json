@@ -152,5 +152,10 @@
   "Total":"Total",
   "item":"item",
   "items":"items",
-  "Logout":"Logout"
+  "Logout":"Logout",
+  "numbers on the card":"numbers on the card",
+  "Topup":"Topup",
+  "تم استخدام رمز التفعيل من قبل":"pin have been used",
+  "تم إضافة":"your balance have been increased by ",
+  "هذه القطعة موجودة في السلة":"you have added this item in your cart"
 }
