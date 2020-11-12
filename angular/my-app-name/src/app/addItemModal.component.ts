@@ -1,38 +1,38 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { Data } from './services/data.service';
-import { Observable } from 'rxjs';
-import { ItemComponent } from './item.component';
-import { Router, NavigationEnd } from '@angular/router';
 import { SelectItem , SelectItemGroup } from 'primeng/api';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-addItem',
   templateUrl: './addItemModal.component.html',
 })
 export class AddItemModalComponent {
+  message = "Thank you, The item have changed"
+  success:boolean = false
   addForm;
-  sub = this.data.category$.subscribe((data) => { 
-    if (data){
-      data.forEach(cat=> {
-        this.category = []
-        data.forEach(data => {
-          if(data.collegeName == cat.collegeName){
-            this.category.push({label:data.name , value:data.code})
-          }
-        })
-        if(this.rootNames.indexOf(cat.collegeName) == -1){
-          this.rootNames.push(cat.collegeName)
-          this.root.push({label:cat.collegeName , items: this.category})
-        }
+  sub = this.data.root$.subscribe(dataRoot => {
+    if (dataRoot){
+      dataRoot.forEach(dataArrayRoot => {
+        this.data.getCategory({name:dataArrayRoot.name})
       })
     }
-     });
-  root: SelectItemGroup[] = [];
-  category:SelectItem[]
-  rootNames = []
-  constructor(private formBuilder: FormBuilder, private data: Data) {
-    //SelectItem API with label-value pairs
+  })
 
+  subCategory = this.data.category$.subscribe(dataCategory => {
+    if (dataCategory){
+      let category:SelectItem[] = []
+      dataCategory.forEach(dataArrayCategory => {
+        category.push({label:dataArrayCategory.name , value:dataArrayCategory.name})
+      })
+      this.root.push({label:dataCategory[0].collegeName , items:category})
+    }
+  })
+
+  root: SelectItemGroup[] = [];
+  rootNames = []
+  constructor(private formBuilder: FormBuilder, private data: Data , private cook : CookieService) {
+    //SelectItem API with label-value pairs
     this.addForm = this.formBuilder.group({
       url: ['', Validators.required],
       author: ['', Validators.required],
@@ -46,8 +46,8 @@ export class AddItemModalComponent {
     });
   }
 
+
   onSubmit(req) {
-    console.log(req)
     this.data.setWholeItem('add_to_items', {
       url: req.url,
       author: req.author,
@@ -59,5 +59,36 @@ export class AddItemModalComponent {
       numberCode: req.code,
       courseName:req.courseName
     });
+    this.success = true
+    setTimeout(() => {
+      this.success = false
+      $('addModal').modal('hide');
+    }, 7000);
+  }
+  onEdit(req){
+    if (!this.cook.get("edited")){
+      this.success = true
+      this.message = "Sorry timeout"
+      setTimeout(() => {
+        this.success = false
+        this.message = "Thank you, The item have changed"
+      }, 7000);
+      $('#addModal').modal('hide');
+      return
+    }
+    this.data.setWholeItem("edit_item" , {
+      url:this.cook.get("edited"),
+      courseName:req.courseName,
+      edition:req.edition,
+      price:req.price,
+      type:req.type,
+      category:req.selected,
+      numberCode:req.code
+    })
+    this.success = true
+    setTimeout(() => {
+      this.success = false
+      $('addModal').modal('hide');
+    }, 7000);
   }
 }

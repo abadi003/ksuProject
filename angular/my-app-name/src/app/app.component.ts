@@ -48,8 +48,8 @@ export class AppComponent implements AfterViewInit {
     private trans: TranslationService
   ) {
     this.useLang()
-    
-    
+
+
 
     //if it is set to 1 that means nothing changed in main page , there is no need to route the user. otherwise we will route them to same page and restore everything to defult
     cook.set('main', '1');
@@ -162,5 +162,9 @@ export class AppComponent implements AfterViewInit {
       this.cook.set("lang" , "ar")
       this.useLang()
     }
+  }
+
+  openAddModal(){
+    $('#pills-add-tab').tab('show')
   }
 }

@@ -18,9 +18,8 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          
           <h5 class="modal-title" id="exampleModalLabel">Topup</h5>
-          
+
           <button
             type="button"
             class="close"
@@ -31,12 +30,12 @@
           </button>
         </div>
         <div
-            class="alert alert-danger d-flex justify-content-center"
-            role="alert"
-            *ngIf="failure"
-          >
-            {{"تم استخدام رمز التفعيل من قبل"|translate}}
-          </div>
+          class="alert alert-danger d-flex justify-content-center"
+          role="alert"
+          *ngIf="failure"
+        >
+          {{"تم استخدام رمز التفعيل من قبل"|translate}}
+        </div>
         <div class="modal-body">
           <input
             type="text"
@@ -49,7 +48,9 @@
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             {{"Close"|translate}}
           </button>
-          <button type="submit" class="btn btn-primary">{{"Topup"|translate}}</button>
+          <button type="submit" class="btn btn-primary">
+            {{"Topup"|translate}}
+          </button>
         </div>
       </div>
     </div>

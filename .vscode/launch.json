@@ -2,16 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Chrome",
-            "request": "launch",
-            "type": "pwa-chrome",
-            "url": "http://localhost:3",
-            "webRoot": "${workspaceFolder}\\myServer.js",
-            "serverReadyAction": {
-                "action": "openExternally"
-            }
-        },
-        {
             "type": "pwa-node",
             "name": "express backEnd",
             "request": "launch",
@@ -21,11 +11,11 @@
             }
         },    
               {
-                "type": "chrome",
+                "type": "pwa-chrome",
                 "request": "launch",
                 "name": "angular",
                 "url": "http://localhost:4200",
-                "webRoot": "${workspaceFolder}",
+                "webRoot": "${workspaceFolder}/angular/my-app-name/",
                 "serverReadyAction": {
                     "action": "openExternally"
                 }

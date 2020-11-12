@@ -1,16 +1,20 @@
 module.exports = function(sequelize, Sequelize) {
     
-    var Prepaid = sequelize.define('prepaid_card', {
+    var Item = sequelize.define('item', {
 
-        pinNumber: {
+        itemId: {
             primaryKey: true,
-            type: Sequelize.STRING,
-        },
-        amount: {
             type: Sequelize.INTEGER,
         },
         userId: {
             type: Sequelize.INTEGER,
+        },
+        invoiceId: {
+            type: Sequelize.INTEGER,
+        },
+        url: {
+            primaryKey: true,
+            type: Sequelize.STRING,
         },
     
 
@@ -20,6 +24,6 @@ module.exports = function(sequelize, Sequelize) {
         underscored: true
     });
 
-    return Prepaid;
+    return Item;
 
 }

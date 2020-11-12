@@ -4,7 +4,7 @@
   style="margin-top: 80px"
   *ngIf="failure"
 >
-  {{"هذه القطعة موجودة في السلة"|translate}}
+  {{ message | translate }}
 </div>
 <div
   class="card shadow mb-4 ml-4 d-inline-block"
@@ -32,31 +32,77 @@
         >{{ items.name }}</label
       >
       <button
-        class="btn btn-md add"
+        class="btn btn-md rounded-circle"
         *ngIf="!user"
         data-toggle="modal"
         data-target="#exampleModalCenter"
       >
         <i class="material-icons">add_circle_outline</i>
       </button>
+      <div class="btn-group" *ngIf="user && user.isAdmin">
+        <button
+          (click)="edit(items.url)"
+          data-toggle="modal"
+          data-target="#addModal"
+          class="btn btn-sm rounded-circle"
+        >
+          <i class="material-icons">edit</i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm dropdown-toggle dropdown-toggle-split"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu">
+          <a
+            (click)="edit(items.url)"
+            data-toggle="modal"
+            data-target="#addModal"
+            class="dropdown-item"
+            href="#"
+            ><i class="material-icons" style="font-size: 1.5rem">edit</i>
+            Edit</a
+          >
+          <a
+           (click) = "delete(items.url)"
+            data-toggle="modal"
+            data-target="#deleteModal"
+            class="dropdown-item"
+            role="button"
+            ><i class="material-icons" style="font-size: 1.5rem">
+              delete_forever
+            </i>
+            Delete</a
+          >
+        </div>
+      </div>
       <button
-        class="btn btn-md add"
-        *ngIf="user && cartNames && cartNames.includes(items.name)"
+        class="btn btn-md rounded-circle"
+        *ngIf="
+          user && !user.isAdmin && cartNames && cartNames.includes(items.name)
+        "
         (click)="addToCart(items.url)"
         style="color: rgb(0, 162, 255)"
       >
         <i class="material-icons">add_circle_outline</i>
       </button>
       <button
-        class="btn btn-md add"
-        *ngIf="user && cartNames && !cartNames.includes(items.name)"
+        class="btn btn-md rounded-circle"
+        *ngIf="
+          user && !user.isAdmin && cartNames && !cartNames.includes(items.name)
+        "
         (click)="addToCart(items.url)"
       >
         <i class="material-icons">add_circle_outline</i>
       </button>
     </div>
     <label class="items_name my-2"
-      >{{ items.price }}<strong style="color: green"> {{"SAR"|translate}}</strong>
+      >{{ items.price
+      }}<strong style="color: green"> {{ "SAR" | translate }}</strong>
     </label>
   </div>
 </div>

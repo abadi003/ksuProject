@@ -10,17 +10,17 @@
   <!-- Nav Item - Dashboard -->
   <li class="nav-item" *ngFor="let root of root">
     <a
-    role="button"
-    (click) = "expand(root.name)"
+      role="button"
+      (click)="expand(root.name)"
       class="nav-link"
       href="#"
       data-toggle="collapse"
-      [attr.data-target]=" '#' + root.name.split(' ').join('')"
+      [attr.data-target]="'#' + root.name.split(' ').join('')"
       aria-expanded="true"
       aria-controls="collapsePages"
     >
       <i class="{{ root.icon }}"></i>
-      <span>{{ root.name | translate}}</span>
+      <span>{{ root.name | translate }}</span>
     </a>
     <div
       id="{{ root.name.split(' ').join('') }}"
@@ -33,6 +33,7 @@
           <a
             class="collapse-item"
             role="button"
+            style="white-space: pre-wrap"
             (click)="categorize(category.name)"
           >
             {{ category.name | translate }}

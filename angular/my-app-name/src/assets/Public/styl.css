@@ -73,5 +73,8 @@
 	z-index: 99999 !important;
  }
 
+ .p-dropdown.p-component{
+	 width: 100%;
+ }
  
 

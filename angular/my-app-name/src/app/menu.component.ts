@@ -18,7 +18,6 @@ export class MenuComponent {
     private cookie:CookieService
   ) {
     this.data.getRoot();
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   //categorize the item if it is in main page , otherwise route the user before categorize the items
@@ -36,6 +35,7 @@ export class MenuComponent {
 
   //call  subcategory from database
   expand(name) {
+    this.category = []
     this.data.getCategory({ name: name });
   }
  

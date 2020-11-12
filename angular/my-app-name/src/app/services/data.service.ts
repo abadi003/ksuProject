@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
-import { ItemComponent } from '../item.component';
 import { Observable, BehaviorSubject, from } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { TranslationKeyValues } from '../interfaces';
@@ -9,8 +8,8 @@ import { TranslateLoader, TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class Data {
-  config = "http://165.22.74.255:3/"
-  // config = 'http://localhost:3/';
+  // config = "http://165.22.74.255:3/"
+  config = 'http://localhost:3/';
   constructor(private http: HttpClient) {}
   private resultList: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
   wholeItem: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
@@ -25,6 +24,8 @@ export class Data {
   numberOfItem$: Observable<any[]> = this.numberOfItems.asObservable();
   user: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
   user$: Observable<any[]> = this.user.asObservable();
+  invoices: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
+  invoices$: Observable<any[]> = this.invoices.asObservable();
   getData(url: string): Observable<any[]> {
     return this.http.get<any[]>(this.config + url).pipe();
   }
@@ -45,6 +46,10 @@ export class Data {
     }
     return [error||'Node.js server error']
   }
+
+  /**
+   * 
+   */
   public getWholeItem() {
     this.getData('item').subscribe((data) => this.wholeItem.next(data));
   }
@@ -69,6 +74,9 @@ export class Data {
   }
   public getUser(req) {
     this.postData('user', req).subscribe((data) => this.user.next(data));
+  }
+  public getInvoices(req) {
+    this.postData('get_invoices', req).subscribe((data) => this.invoices.next(data));
   }
   forEach(loop: Object[], target: Object[], attr: string[]) {
     loop.forEach(function (data) {
@@ -130,8 +138,8 @@ export function CustomTranslateLoaderFactory(
 ) {
   return CustomTranslateLoader.of(translationService);
 }
-/* 
-Just call this.languageService.updateCurrentLanguage(language); to switch language 
+/*
+Just call this.languageService.updateCurrentLanguage(language); to switch language
 */
 @Injectable({
   providedIn: 'root',

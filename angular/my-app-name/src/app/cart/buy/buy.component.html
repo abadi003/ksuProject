@@ -1,0 +1,116 @@
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
+  <div
+    class="modal fade"
+    id="buyModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="buyModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="buyModalLabel">  </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div
+          class="alert alert-danger d-flex justify-content-center"
+          role="alert"
+          *ngIf="failure"
+        >
+          {{ message | translate }}
+        </div>
+        <div class="modal-body">
+          <div class="form-check" >
+            <input
+              class="form-check-input"
+              type="radio"
+              name="method"
+              id="exampleRadios1"
+              value="creditCard"
+              formControlName="method"
+              (click)="creditCard()"
+            />
+            <label class="form-check-label" for="exampleRadios1">
+              Credit Card
+            </label>
+          </div>
+          <ngx-credit-cards
+            [hideName]="false"
+            [namePlaceholder]="'Enter Name'"
+            [backDescriptionText]="'This card remains a property of my bank'"
+          ></ngx-credit-cards>
+          <div *ngIf="creditCardVar">
+            <div class="container py-4">
+              <h3 class="text-center">Enter Your Card Details</h3>
+              <div class="form-group">
+                <label for="">Name:</label>
+                <input
+                  class="form-control"
+                  ngxCardName
+                  (nameChange)="checkNumber($event)"
+                  type="text"
+                />
+              </div>
+              <div class="form-row">
+                <div class="form-group col-xs-12 col-sm-6">
+                  <label for="">No:</label>
+                  <input
+                    class="form-control"
+                    ngxCardNo
+                    (numChange)="checkNumber($event)"
+                    type="text"
+                  />
+                </div>
+                <div class="form-group col-xs-6 col-sm-3">
+                  <label for="">Expiry:</label>
+                  <input
+                    class="form-control"
+                    ngxCardExpiry
+                    (cvvChange)="checkNumber($event)"
+                    type="text"
+                  />
+                </div>
+                <div class="form-group col-xs-6 col-sm-3">
+                  <label for="">Cvv:</label>
+                  <input
+                    class="form-control"
+                    ngxCardCvv
+                    (expiryChange)="checkNumber($event)"
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="method"
+              id="exampleRadios2"
+              value="balance"
+              formControlName="method"
+            />
+            <label class="form-check-label" for="exampleRadios2">
+              From my balance
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

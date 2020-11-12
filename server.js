@@ -4,15 +4,26 @@
 // ******************************************************************************
 // *** Dependencies
 // =============================================================
+
+
+
 let express = require("express");
+
+
 // Import Handlebars
 let exphbs = require("express-handlebars");
 
 // Sets up the Express App
 // =============================================================
+
+
 let app = express();
+
+
 let cors = require("cors")
 let passport   = require('passport');
+
+
 let session    = require('express-session');
 let bodyParser = require('body-parser');
 let env = require('dotenv');
@@ -20,28 +31,10 @@ let PORT = process.env.PORT || 3;
 
 
 // Requiring our models for syncing
+
+
 let db = require("./models");
 app.use(cors())
-let setCache = function (req, res, next) {
-    // here you can define period in second, this one is 5 minutes
-    const period = 60 * 0
-  
-    // you only want to cache for GET requests
-    if (req.method == 'GET') {
-      res.set('Cache-control', `public, max-age=${period}`)
-    } else {
-      // for the other requests set strict no caching parameters
-      res.set('Cache-control', `no-store`)
-    }
-  
-    // remember to call next() to pass on the request
-    next()
-  }
-  
-  // now call the new middleware function in your app
-  
-  app.use(setCache)
-  
 
 
 // Sets up the Express app to handle data parsing

@@ -157,5 +157,17 @@
   "Topup":"Topup",
   "تم استخدام رمز التفعيل من قبل":"pin have been used",
   "تم إضافة":"your balance have been increased by ",
-  "هذه القطعة موجودة في السلة":"you have added this item in your cart"
+  "هذه القطعة موجودة في السلة":"you have added this item in your cart",
+  "Add":"Add",
+  "Edit":"Edit",
+  "URL":"URL",
+  "Author":"Author",
+  "Book name":"Book name",
+  "Course name":"Course name",
+  "Edition":"Edition",
+  "Price":"Price",
+  "Type":"Type",
+  "Course code":"Course code",
+  "Sorry timeout":"Sorry timeout",
+  "Procced to checkout":"Procced to checkout"
 }

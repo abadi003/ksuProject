@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Data } from '../services/data.service';
-
+import * as mod from 'bootstrap';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -38,7 +39,7 @@ export class CartComponent implements OnInit {
 
   //flag indicates whether screen width is smaller than 576px
   small = false;
-  constructor(private data: Data) {}
+  constructor(private data: Data , private root : Router) {}
 
   //check if screen width less than 576px
   ngOnInit() {
@@ -53,5 +54,16 @@ export class CartComponent implements OnInit {
       delete: url,
       userId: this.user.userId,
     });
+  }
+
+  buy(){
+    console.log(this.cartItem[1])
+    this.data.postData("check_available" , {
+      items:this.cartItem
+    }).subscribe(data => {
+      if (data && data.length == 0){
+        $('#buyModal').modal('show')
+      }
+    })
   }
 }

@@ -1,5 +1,12 @@
-<form [formGroup]="addForm" (ngSubmit)="onSubmit(addForm.value)">
-  <div
+<div
+class="alert alert-success fixed-top"
+role="alert"
+style="margin-top: 80px"
+*ngIf="success"
+>
+{{"Thank you, The item have changed"|translate}}
+</div>
+ <div
     class="modal fade"
     id="addModal"
     tabindex="-1"
@@ -21,74 +28,175 @@
           </button>
         </div>
         <div class="modal-body">
-          <!-- فوق بعض و لا جنب بعض -->
-          <input
-            type="url"
-            name="url"
-            placeholder="url"
-            class="form-control"
-            formControlName="url"
-          />
-          <input
-            type="text"
-            name="author"
-            placeholder="author"
-            class="form-control"
-            formControlName="author"
-          />
-          <input
-            type="text"
-            name="name"
-            placeholder="name"
-            class="form-control"
-            formControlName="name"
-          />
-          <input
-            type="text"
-            name="courseName"
-            placeholder="course name"
-            class="form-control"
-            formControlName="courseName"
-          />
-          <input
-            type="number"
-            name="edition"
-            placeholder="edition"
-            class="form-control"
-            formControlName="edition"
-          />
-          <input
-            type="number"
-            name="price"
-            placeholder="price"
-            class="form-control"
-            formControlName="price"
-          />
-          <input
-            type="text"
-            name="type"
-            placeholder="type"
-            class="form-control"
-            formControlName="type"
-          />
-          <p-dropdown  [options]="root"  formControlName="selected" [group]="true"></p-dropdown>
-          <input
-            type="text"
-            name="code"
-            placeholder="course code"
-            class="form-control"
-            formControlName="code"
-          />
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Close
-          </button>
-          <button type="submit" class="btn btn-primary">
-            Add
-          </button>
+          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="pills-add-tab"
+                data-toggle="pill"
+                href="#pills-add"
+                role="tab"
+                aria-controls="pills-add"
+                aria-selected="true"
+              >
+                {{ "Add" | translate }}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="pills-edit-tab"
+                data-toggle="pill"
+                href="#pills-edit"
+                role="tab"
+                aria-controls="pills-edit"
+                aria-selected="false"
+                >{{ "Edit" | translate }}</a
+              >
+            </li>
+          </ul>
+          <div class="tab-content" id="pills-tabContent">
+            <div
+              class="tab-pane fade show active"
+              id="pills-add"
+              role="tabpanel"
+              aria-labelledby="pills-add-tab"
+            >
+            <form [formGroup]="addForm" (ngSubmit)="onSubmit(addForm.value)">
+              <!-- فوق بعض و لا جنب بعض -->
+              <input
+                type="url"
+                name="url"
+                placeholder="{{ 'URL' | translate }}"
+                class="form-control"
+                formControlName="url"
+              />
+              <input
+                type="text"
+                name="author"
+                placeholder="{{ 'Author' | translate }}"
+                class="form-control"
+                formControlName="author"
+              />
+              <input
+                type="text"
+                name="name"
+                placeholder="{{ 'name' | translate }}"
+                class="form-control"
+                formControlName="name"
+              />
+              <input
+                type="text"
+                name="courseName"
+                placeholder="{{ 'Course name' | translate }}"
+                class="form-control"
+                formControlName="courseName"
+              />
+              <input
+                type="number"
+                name="edition"
+                placeholder="{{ 'Edition' | translate }}"
+                class="form-control"
+                formControlName="edition"
+              />
+              <input
+                type="number"
+                name="price"
+                placeholder="{{ 'Price' | translate }}"
+                class="form-control"
+                formControlName="price"
+              />
+              <input
+                type="text"
+                name="type"
+                placeholder="{{ 'Type' | translate }}"
+                class="form-control"
+                formControlName="type"
+              />
+              <p-dropdown
+                [options]="root"
+                formControlName="selected"
+                [group]="true"
+              ></p-dropdown>
+              <input
+                type="text"
+                name="code"
+                placeholder="{{ 'Course code' | translate }}"
+                class="form-control"
+                formControlName="code"
+              />
+              <hr>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                  {{ "Close" | translate }}
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  {{ "Add" | translate }}
+                </button>
+              </div>
+            </form>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="pills-edit"
+              role="tabpanel"
+              aria-labelledby="pills-edit-tab"
+            >
+            <form [formGroup]="addForm" (ngSubmit)="onEdit(addForm.value)">
+              <!-- فوق بعض و لا جنب بعض -->
+              <input
+                type="text"
+                name="courseName"
+                placeholder="{{ 'Course name' | translate }}"
+                class="form-control"
+                formControlName="courseName"
+              />
+              <input
+                type="number"
+                name="edition"
+                placeholder="{{ 'Edition' | translate }}"
+                class="form-control"
+                formControlName="edition"
+              />
+              <input
+                type="number"
+                name="price"
+                placeholder="{{ 'Price' | translate }}"
+                class="form-control"
+                formControlName="price"
+              />
+              <input
+                type="text"
+                name="type"
+                placeholder="{{ 'Type' | translate }}"
+                class="form-control"
+                formControlName="type"
+              />
+              <p-dropdown
+                [options]="root"
+                formControlName="selected"
+                [group]="true"
+              ></p-dropdown>
+              <input
+                type="text"
+                name="code"
+                placeholder="{{ 'Course code' | translate }}"
+                class="form-control"
+                formControlName="code"
+              />
+              <hr>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                  {{ "Close" | translate }}
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  {{ "Edit" | translate }}
+                </button>
+              </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</form>

@@ -1,9 +1,9 @@
 import { Component} from '@angular/core';
 import { Data } from './services/data.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder,Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import * as mod from 'bootstrap';
-import { SelectItem, SelectItemGroup } from 'primeng/api';
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -101,5 +101,5 @@ Validators.required
   }
 
   hide = true;
-  get passwordInput() { return this.checkoutForm.get('password'); }  
+  get passwordInput() { return this.checkoutForm.get('password'); }
 }

@@ -10,7 +10,9 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">{{"Login"|translate}}</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            {{ "Login" | translate }}
+          </h5>
           <button
             type="button"
             class="close"
@@ -25,26 +27,24 @@
           role="alert"
           *ngIf="failure"
         >
-        {{message|translate}}
+          {{ message | translate }}
         </div>
         <div class="modal-body">
           <!-- فوق بعض و لا جنب بعض -->
           <mat-form-field style="width: 100%">
             <input
               matInput
-              placeholder="{{'ID'|translate}}"
+              placeholder="{{ 'ID' | translate }}"
               type="text"
               formControlName="id"
               required
             />
-            <mat-hint>{{
-              "Please Enter your ID" | translate
-            }}</mat-hint>
+            <mat-hint>{{ "Please Enter your ID" | translate }}</mat-hint>
           </mat-form-field>
           <mat-form-field style="width: 100%">
             <input
               matInput
-              placeholder="{{'Password'|translate}}"
+              placeholder="{{ 'Password' | translate }}"
               [type]="hide ? 'password' : 'text'"
               formControlName="password"
               required
@@ -52,35 +52,35 @@
             <mat-icon matSuffix (click)="hide = !hide">{{
               hide ? "visibility_off" : "visibility"
             }}</mat-icon>
-            <mat-hint
-              >{{"Please Enter your password"|translate}}</mat-hint
-            >
+            <mat-hint>{{ "Please Enter your password" | translate }}</mat-hint>
           </mat-form-field>
-          <input type="checkbox" formControlName = "keepMe" (click) = "disable()">
-          {{"Keep me signed in for"|translate}}
-        <mat-form-field  style="width: 3.4rem; margin-right: 1.5rem;">
+          <input type="checkbox" formControlName="keepMe" (click)="disable()" />
+          {{ "Keep me signed in for" | translate }}
+          <mat-form-field style="width: 3.4rem; margin-right: 1.5rem">
             <input
               matInput
               min="1"
               max="365"
-              placeholder='{{"Days"|translate}}'
+              placeholder="{{ 'Days' | translate }}"
               type="number"
               formControlName="days"
             />
           </mat-form-field>
           <mat-form-field>
-            <mat-select formControlName = "daysSelect">
-          <mat-option  *ngFor="let time of daysSelect" [value]="time.value">
-              {{time.label|translate}}
-            </mat-option>
-        </mat-select>
+            <mat-select formControlName="daysSelect">
+              <mat-option *ngFor="let time of daysSelect" [value]="time.value">
+                {{ time.label | translate }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            {{"Close"|translate}}
+            {{ "Close" | translate }}
           </button>
-          <button type="submit" class="btn btn-primary">{{"Login"|translate}}</button>
+          <button type="submit" class="btn btn-primary">
+            {{ "Login" | translate }}
+          </button>
         </div>
       </div>
     </div>

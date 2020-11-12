@@ -22,12 +22,16 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Topup } from './topup';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from'@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslationModule } from './services/data.service.module';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
+import { DeleteConformationComponent } from "./delete.conformation.component";
+import { NgxCreditCardsService } from "./cart/ngx-credit-cards.service";
+import { NgxCreditCardsModule } from "./cart/ngx-credit-cards.module";
+import { InvoicesComponent } from "./invoices.component";
 
 @NgModule({
   declarations: [
@@ -38,6 +42,8 @@ import {MatSelectModule} from '@angular/material/select';
     CartComponent,
     AddItemModalComponent,
     Topup,
+    DeleteConformationComponent,
+    InvoicesComponent
   ],
   imports: [
     BrowserModule,
@@ -55,13 +61,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatInputModule,
     MatSelectModule,
     TranslationModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
+    NgxCreditCardsModule,
+    TranslateModule.forRoot(),
   ],
   providers: [
     Data,
@@ -69,6 +70,7 @@ import {MatSelectModule} from '@angular/material/select';
     NgbModal,
     TranslationService,
     LanguageService,
+    NgxCreditCardsService,
   ],
   bootstrap: [AppComponent],
 })
