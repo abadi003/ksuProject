@@ -9,10 +9,9 @@ import { NgxCreditCardsService } from './ngx-credit-cards.service';
 import { CommonModule } from "@angular/common";
 import { NgxCreditCardsComponent } from "./buy/creditCard/ngx-credit-cards.component";
 import { TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
-  imports: [CommonModule ,FormsModule, ReactiveFormsModule , TranslateHttpLoader , TranslateModule],
+  imports: [CommonModule ,FormsModule, ReactiveFormsModule  , TranslateModule],
   exports: [
     CreditCardCvvDirective,
     CreditCardExpiryDirective,

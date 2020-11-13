@@ -3,7 +3,7 @@ const mysql = require('mysql');
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "12a n f012345"
+    password: "12012345"
 });
 exports.sql = function sql(msg , callback) {
         con.query("SELECT sha1(\"" + msg + "\")", function (err, result, fields) {
