@@ -483,6 +483,7 @@ app.post("/get_invoices" , async (req , res)=>{
     invoice.belongsTo(item);
     item.hasOne(invoice);
     res.send(await item.findAll({
+      include: invoice,
       where:{
         userId:req.body.userId
       }
