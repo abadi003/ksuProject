@@ -480,10 +480,10 @@ module.exports = function (app, passport) {
 
 
 app.post("/get_invoices" , async (req , res)=>{
-    item.hasOne(invoice, {
-      through: invoice,
-      foreignKey: "invoiceId",
+    invoice.hasMany(item, {
+      foreignKey: 'invoiceId'
     });
+    item.belongsTo(invoice);
     res.send(await item.findAll({
       include: invoice,
       where:{
