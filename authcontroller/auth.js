@@ -479,16 +479,15 @@ module.exports = function (app, passport) {
   })
 
 
-  app.post("/get_invoices" , async (req , res)=>{
+app.post("/get_invoices" , async (req , res)=>{
     invoice.belongsTo(item);
     item.hasOne(invoice);
-    res.send(await invoice.findAll({
-      include: item,
+    res.send(await item.findAll({
       where:{
         userId:req.body.userId
       }
     }))
-    
+
   })
 
   // // function to call once successfully authenticated
