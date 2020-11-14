@@ -483,7 +483,9 @@ app.post("/get_invoices" , async (req , res)=>{
     invoice.hasMany(item, {
       foreignKey: 'invoiceId'
     });
-    item.belongsTo(invoice);
+    item.belongsTo(invoice,{
+      foreignKey: 'invoiceId'
+    });
     res.send(await item.findAll({
       include: invoice,
       where:{
