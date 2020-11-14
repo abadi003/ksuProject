@@ -482,6 +482,7 @@ module.exports = function (app, passport) {
   app.post("/get_invoices" , async (req , res)=>{
     item.belongsTo(invoice);
     res.send(await invoice.findAll({
+      include: item,
       where:{
         userId:req.body.userId
       }
