@@ -46,7 +46,7 @@
     "payment-formatter": "^1.0.4",
     "sequelize": "^6.2.2",
     "sha1": "^1.1.1",
-    "ssh2": "^0.8.9",
+    "ssh2": "^1.4.0",
     "tunnel-ssh": "^4.1.4",
     "typeorm": "^0.2.25"
   },
