@@ -6,9 +6,6 @@
             "name": "express backEnd",
             "request": "launch",
             "program": "${workspaceFolder}\\server.js",
-            "serverReadyAction": {
-                "action": "openExternally"
-            }
         },    
               {
                 "type": "pwa-chrome",

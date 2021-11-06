@@ -16,8 +16,22 @@ export class InvoicesComponent {
   })
   sub = this.data.invoices$.subscribe(data => {
     if (data){
-      console.log(data)
-      this.invoices = data
+            
+      let arrayOfInvoices= data
+      for(let i=0; i<arrayOfInvoices.length;++i){
+        arrayOfInvoices.sort((a,b)=>{
+          if(a.invoiceId<b.invoiceId)
+            return -1
+          if(a.invoiceId<b.invoiceId)
+            return 0
+          return 1
+        })
+        console.log(arrayOfInvoices.indexOf(data[i].invoiceId))
+        console.log(data[i].invoiceId) 
+        
+      }
+      this.invoices = arrayOfInvoices
+      console.log(arrayOfInvoices)
     }
 
   })
@@ -28,3 +42,20 @@ export class InvoicesComponent {
   }
 
 }
+
+// sub = this.data.invoices$.subscribe(data => {
+//   if (data){
+//     console.log(data)
+//     let arrayOfInvoices= []
+//     for(let i=0; i<data.length;++i){
+//       arrayOfInvoices.push(data[i])
+//     }
+//     this.invoices = arrayOfInvoices
+//   }
+
+// })
+// invoices
+// userId
+// constructor(private data :Data){
+
+// }

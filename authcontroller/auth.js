@@ -263,7 +263,7 @@ module.exports = function (app, passport) {
       category: (
         await category.findOne({
           where: {
-            code: req.body.category,
+            name: req.body.category,
           },
         })
       ).name,
@@ -308,7 +308,7 @@ module.exports = function (app, passport) {
                   userId: req.body.userId,
                 },
               })
-            ).balance + (await amount),
+            ).balance + (await topup.amount),
         },
         {
           where: {
@@ -324,7 +324,7 @@ module.exports = function (app, passport) {
           },
         }
       );
-      res.send(["success", amount]);
+      res.send(["success",await topup.amount]);
     } else {
       res.send(["failure"]);
     }
@@ -480,12 +480,19 @@ module.exports = function (app, passport) {
 
 
   app.post("/get_invoices" , async (req , res)=>{
-    res.send(await invoice.findAll({
+    invoice.hasMany(item, {
+      foreignKey: 'invoiceId'
+    });
+    item.belongsTo(invoice,{
+      foreignKey: 'invoiceId'
+    });
+    res.send(await item.findAll({
+      include: invoice,
       where:{
         userId:req.body.userId
       }
     }))
-    
+
   })
 
   // // function to call once successfully authenticated
